@@ -2,6 +2,10 @@
 
 > Senior QA Automation Engineer / SDET interview preparation materials built from a **real production framework** (Java 17 + Playwright + TestNG + REST Assured + MySQL + MongoDB).
 
+### 🌐 [📖 Read Online → boobalakrishnan89.github.io/qa-interview-preparation](https://boobalakrishnan89.github.io/qa-interview-preparation/)
+
+> Premium dark-themed HTML with sidebar navigation, full-text search (⌘K), collapsible Q&A cards, code highlighting, dark/light toggle, and print support.
+
 ---
 
 ## 📚 Documents
