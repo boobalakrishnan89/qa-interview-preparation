@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senior QA Engineer — Interview Q&A (150 Questions)</title>
-    <meta name="description" content="150-question Senior QA Automation Engineer + Java Programming interview preparation — Playwright, TestNG, REST Assured, Design Patterns, Collections, Multithreading, JVM">
+    <title>Senior QA Engineer — Interview Q&A (200 Questions)</title>
+    <meta name="description" content="200-question Senior QA interview preparation — Playwright, TestNG, Java, SQL, CI/CD, Docker, Kubernetes, Design Patterns, Collections, Multithreading">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -211,6 +211,8 @@
         .section-header.part-a { border-left: 4px solid var(--accent); }
         .section-header.part-b { border-left: 4px solid var(--purple); }
         .section-header.part-c { border-left: 4px solid var(--orange); }
+        .section-header.part-d { border-left: 4px solid var(--green); }
+        .section-header.part-e { border-left: 4px solid #58a6ff; }
         .section-icon { font-size: 28px; }
         .section-title { font-size: 18px; font-weight: 700; }
         .section-desc { font-size: 13px; color: var(--text-secondary); }
@@ -239,6 +241,8 @@
         }
         .qa-card.part-b .qa-number { background: var(--purple-bg); color: var(--purple); }
         .qa-card.part-c .qa-number { background: var(--orange-bg); color: var(--orange); }
+        .qa-card.part-d .qa-number { background: var(--green-bg); color: var(--green); }
+        .qa-card.part-e .qa-number { background: rgba(88,166,255,.1); color: #58a6ff; }
 
         .qa-question { flex: 1; font-weight: 600; font-size: 15px; line-height: 1.5; }
         .qa-category {
@@ -1422,7 +1426,6 @@ public class TestDataPool {
 {id:140,part:"C",category:"JVM",q:"JIT compilation — how does the JVM optimize hot code?",a:`<p>JVM uses <strong>tiered compilation</strong>:</p><ol><li><strong>Interpreter:</strong> Executes bytecode line by line (fast startup)</li><li><strong>C1 Compiler:</strong> Quick compilation with basic optimizations</li><li><strong>C2 Compiler:</strong> Aggressive optimization of hot spots (&gt;10,000 calls)</li></ol><table><tr><th>Optimization</th><th>What It Does</th></tr><tr><td>Method inlining</td><td>Replaces call with method body</td></tr><tr><td>Loop unrolling</td><td>Reduces branch overhead</td></tr><tr><td>Escape analysis</td><td>Stack allocation if object doesn't escape</td></tr><tr><td>Dead code elimination</td><td>Removes unreachable code</td></tr><tr><td>Lock elision</td><td>Removes unnecessary synchronization</td></tr></table>`},
 
 {id:141,part:"C",category:"Coding",q:"Three Sum — find all unique triplets summing to zero.",a:`<pre><code>public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {\n    Arrays.sort(nums);\n    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();\n    for (int i = 0; i &lt; nums.length - 2; i++) {\n        if (i &gt; 0 && nums[i] == nums[i-1]) continue; // Skip dups\n        int lo = i + 1, hi = nums.length - 1;\n        while (lo &lt; hi) {\n            int sum = nums[i] + nums[lo] + nums[hi];\n            if (sum == 0) {\n                result.add(List.of(nums[i], nums[lo], nums[hi]));\n                while (lo &lt; hi && nums[lo] == nums[lo+1]) lo++;\n                while (lo &lt; hi && nums[hi] == nums[hi-1]) hi--;\n                lo++; hi--;\n            } else if (sum &lt; 0) lo++;\n            else hi--;\n        }\n    }\n    return result;\n}\n// [-1,0,1,2,-1,-4] → [[-1,-1,2],[-1,0,1]]\n// Time: O(n²), Space: O(1)</code></pre>`},
-
 {id:142,part:"C",category:"Coding",q:"Check if a string is a palindrome — ignoring non-alphanumeric.",a:`<pre><code>public boolean isPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left &lt; right) {\n        while (left &lt; right && !Character.isLetterOrDigit(s.charAt(left))) left++;\n        while (left &lt; right && !Character.isLetterOrDigit(s.charAt(right))) right--;\n        if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right)))\n            return false;\n        left++; right--;\n    }\n    return true;\n}\n// "A man, a plan, a canal: Panama" → true\n// Time: O(n), Space: O(1)</code></pre>`},
 
 {id:143,part:"C",category:"Coding",q:"Find the Kth largest element in an array.",a:`<pre><code>// Approach 1: Sort — O(n log n)\npublic int findKthLargest(int[] nums, int k) {\n    Arrays.sort(nums);\n    return nums[nums.length - k];\n}\n\n// Approach 2: Min-Heap — O(n log k) ✅ Better for large n\npublic int findKthLargest(int[] nums, int k) {\n    PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();\n    for (int num : nums) {\n        minHeap.offer(num);\n        if (minHeap.size() &gt; k) minHeap.poll();\n    }\n    return minHeap.peek();\n}\n// [3,2,1,5,6,4], k=2 → 5</code></pre>`},
@@ -1448,7 +1451,7 @@ public class TestDataPool {
 function renderSidebar() {
     const sidebar = document.getElementById('sidebar');
     let html = '';
-    const sections = {A: {}, B: {}, C: {}};
+    const sections = {A: {}, B: {}, C: {}, D: {}, E: {}};
 
     questions.forEach(q => {
         const part = q.part;
@@ -1471,6 +1474,16 @@ function renderSidebar() {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:var(--orange)">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:var(--green)">Part D — SQL</div></div>';
+    questions.filter(q => q.part === 'D').forEach(q => {
+        html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:var(--green)">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
+    });
+
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#58a6ff">Part E — CI/CD</div></div>';
+    questions.filter(q => q.part === 'E').forEach(q => {
+        html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#58a6ff">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
+    });
+
     sidebar.innerHTML = html;
 }
 
@@ -1483,12 +1496,13 @@ function renderMain() {
     // Hero
     html += `<div class="hero">
         <h1>Senior QA Engineer <span>Interview Q&A</span></h1>
-        <p>150 questions covering framework architecture, design patterns, Java programming, Collections, Multithreading, Streams, JVM internals, coding problems, and leadership — for 10+ years experience.</p>
+        <p>200 questions covering framework architecture, Java, SQL, CI/CD, Docker, Kubernetes, design patterns, coding problems — for 10+ years experience.</p>
         <div class="hero-stats">
-            <div class="hero-stat"><div class="hero-stat-value">150</div><div class="hero-stat-label">Questions</div></div>
-            <div class="hero-stat"><div class="hero-stat-value">35</div><div class="hero-stat-label">Framework</div></div>
-            <div class="hero-stat"><div class="hero-stat-value">40</div><div class="hero-stat-label">Generic QA</div></div>
+            <div class="hero-stat"><div class="hero-stat-value">200</div><div class="hero-stat-label">Questions</div></div>
+            <div class="hero-stat"><div class="hero-stat-value">75</div><div class="hero-stat-label">QA + Framework</div></div>
             <div class="hero-stat"><div class="hero-stat-value">75</div><div class="hero-stat-label">Java</div></div>
+            <div class="hero-stat"><div class="hero-stat-value">30</div><div class="hero-stat-label">SQL</div></div>
+            <div class="hero-stat"><div class="hero-stat-value">20</div><div class="hero-stat-label">CI/CD</div></div>
         </div>
     </div>`;
 
@@ -1496,10 +1510,12 @@ function renderMain() {
     html += `<div class="controls">
         <button class="control-btn" onclick="expandAll()">📖 Expand All</button>
         <button class="control-btn" onclick="collapseAll()">📕 Collapse All</button>
-        <button class="control-btn" onclick="filterPart('A')">🔵 Part A — Framework</button>
-        <button class="control-btn" onclick="filterPart('B')">🟣 Part B — Generic QA</button>
-        <button class="control-btn" onclick="filterPart('C')">🟠 Part C — Java</button>
-        <button class="control-btn active" onclick="filterPart('all')">All 150</button>
+        <button class="control-btn" onclick="filterPart('A')">🔵 Part A</button>
+        <button class="control-btn" onclick="filterPart('B')">🟣 Part B</button>
+        <button class="control-btn" onclick="filterPart('C')">🟠 Java</button>
+        <button class="control-btn" onclick="filterPart('D')">🟢 SQL</button>
+        <button class="control-btn" onclick="filterPart('E')">🔷 CI/CD</button>
+        <button class="control-btn active" onclick="filterPart('all')">All 200</button>
     </div>`;
 
     // Part A Header
@@ -1520,6 +1536,20 @@ function renderMain() {
     html += `<div class="section-header part-c"><span class="section-icon">☕</span><div><div class="section-title">Part C — Java Programming</div><div class="section-desc">Core Java, Collections, Multithreading, Streams, JVM, Design Patterns, Coding Problems (Q76–Q150)</div></div></div>`;
 
     questions.filter(q => q.part === 'C').forEach((q, i) => {
+        html += renderCard(q, i);
+    });
+
+    // Part D Header
+    html += `<div class="section-header part-d"><span class="section-icon">🗄️</span><div><div class="section-title">Part D — SQL for QA</div><div class="section-desc">Joins, Window Functions, Query Optimization, ACID, MongoDB, Database Testing (Q151–Q180)</div></div></div>`;
+
+    questions.filter(q => q.part === 'D').forEach((q, i) => {
+        html += renderCard(q, i);
+    });
+
+    // Part E Header
+    html += `<div class="section-header part-e"><span class="section-icon">🚀</span><div><div class="section-title">Part E — CI/CD & DevOps</div><div class="section-desc">GitHub Actions, Jenkins, Docker, Kubernetes, Deployment Strategies, GitOps (Q181–Q200)</div></div></div>`;
+
+    questions.filter(q => q.part === 'E').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
@@ -1567,7 +1597,9 @@ function filterPart(part) {
         else {
             h.style.display = (part === 'A' && h.classList.contains('part-a')) ||
                               (part === 'B' && h.classList.contains('part-b')) ||
-                              (part === 'C' && h.classList.contains('part-c')) ? '' : 'none';
+                              (part === 'C' && h.classList.contains('part-c')) ||
+                              (part === 'D' && h.classList.contains('part-d')) ||
+                              (part === 'E' && h.classList.contains('part-e')) ? '' : 'none';
         }
     });
 }
