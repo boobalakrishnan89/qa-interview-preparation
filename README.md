@@ -4,7 +4,7 @@
 
 ### 🌐 [📖 Read Online → boobalakrishnan89.github.io/qa-interview-preparation](https://boobalakrishnan89.github.io/qa-interview-preparation/)
 
-> Premium dark-themed HTML with sidebar navigation, full-text search (⌘K), collapsible Q&A cards, code highlighting, dark/light toggle, and print support.
+> Premium dark-themed HTML with sidebar navigation, full-text search (⌘K), collapsible Q&A cards, code highlighting, dark/light toggle, and print support. **150 questions across 3 parts.**
 
 ---
 
@@ -12,8 +12,9 @@
 
 | # | Document | Description | Questions |
 |---|---|---|---|
-| 1 | [Senior Interview Q&A (75 Questions)](onsurity_java_playwright_interview_qa.md) | Comprehensive interview preparation for 10+ years experience | 75 |
-| 2 | [CI/CD Setup & Configuration](cicd_documentation.md) | Complete CI/CD pipeline documentation with GitHub Actions | — |
+| 1 | [📖 **Live HTML** (All Q&A)](https://boobalakrishnan89.github.io/qa-interview-preparation/) | Interactive 150-question document with search & filters | 150 |
+| 2 | [Senior Interview Q&A](onsurity_java_playwright_interview_qa.md) | Framework + Generic QA (Markdown) | 75 |
+| 3 | [CI/CD Setup & Configuration](cicd_documentation.md) | Complete CI/CD pipeline documentation | — |
 
 ---
 
@@ -61,7 +62,22 @@ Sourced from 2025/2026 interview trends at FAANG, FinTech, and top-tier companie
 | Performance & Security | Q64–Q67 | OWASP Top 10, memory leaks, load/stress/soak testing |
 | AI & Modern Trends | Q68–Q70 | GenAI in testing, non-deterministic outputs, self-healing |
 | Scenario-Based Whiteboard | Q71–Q73 | Payment API design, CI debugging, test data pool |
-| Leadership & Behavioral STAR | Q74–Q75 | Flakiness reduction, quality advocacy |
+### Part C: Java Programming (Q76–Q150)
+75 core Java questions with complete code solutions:
+
+| Section | Questions | Topics |
+|---|---|---|
+| Core Java & OOP | Q76–Q85 | Four pillars, Abstract vs Interface, equals/hashCode, Exceptions, Serialization |
+| Collections Framework | Q86–Q90 | HashMap internals, ArrayList vs LinkedList, TreeMap, Comparator |
+| Multithreading & Concurrency | Q91–Q95 | synchronized vs Lock, Deadlock, volatile, CompletableFuture, ThreadPools |
+| Streams & Functional | Q96–Q99 | Stream API, map vs flatMap, Predicate/Consumer/Supplier, Optional |
+| Modern Java (17/21) | Q100–Q102 | Records, Sealed Classes, Virtual Threads |
+| Generics | Q103–Q104 | Type Erasure, PECS |
+| Design Patterns & SOLID | Q105–Q107 | Singleton (3 versions), Factory/Builder/Strategy, SOLID principles |
+| JVM & Performance | Q108–Q109 | JVM Architecture, GC (G1/ZGC), Memory leak diagnosis |
+| Coding Problems (25) | Q110–Q150 | Two Sum, Kadane's, Floyd's Cycle, LRU Cache, Spiral Matrix, Binary Search, 3Sum, Palindrome, Group Anagrams, and more |
+| Output-Based Traps | Q121–Q124 | String pool, finally vs return, mutable HashMap key, autoboxing |
+| System Design | Q125–Q126 | LRU Cache, Token Bucket Rate Limiter |
 
 ---
 
@@ -86,9 +102,12 @@ Sourced from 2025/2026 interview trends at FAANG, FinTech, and top-tier companie
 
 ## 📖 How to Use
 
-1. **Interview Prep** — Start with the [75-question Q&A](onsurity_java_playwright_interview_qa.md). Focus on Part A for framework-specific depth, Part B for generic breadth.
+1. **Interview Prep** — Open the [📖 Live HTML page](https://boobalakrishnan89.github.io/qa-interview-preparation/) and use Part filters:
+   - 🔵 **Part A** — Framework-specific depth (Q1–Q35)
+   - 🟣 **Part B** — Generic senior QA breadth (Q36–Q75)
+   - 🟠 **Part C** — Java programming & coding (Q76–Q150)
 2. **CI/CD Reference** — Use the [CI/CD documentation](cicd_documentation.md) for pipeline setup questions.
-3. **Quick Reference** — Jump to the "Master Quick Reference" table at the end of the Q&A doc for a one-page cheat sheet.
+3. **Search** — Press `⌘K` on the HTML page to instantly search all 150 questions.
 
 ---
 
