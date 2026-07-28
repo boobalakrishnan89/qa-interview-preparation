@@ -4,7 +4,7 @@
 
 ### 🌐 [📖 Read Online → boobalakrishnan89.github.io/qa-interview-preparation](https://boobalakrishnan89.github.io/qa-interview-preparation/)
 
-> Premium dark-themed HTML with sidebar navigation, full-text search (⌘K), collapsible Q&A cards, code highlighting, dark/light toggle, and print support. **150 questions across 3 parts.**
+> Premium dark-themed HTML with sidebar navigation, full-text search (⌘K), collapsible Q&A cards, code highlighting, dark/light toggle, and print support. **200 questions across 5 parts.**
 
 ---
 
@@ -12,7 +12,7 @@
 
 | # | Document | Description | Questions |
 |---|---|---|---|
-| 1 | [📖 **Live HTML** (All Q&A)](https://boobalakrishnan89.github.io/qa-interview-preparation/) | Interactive 150-question document with search & filters | 150 |
+| 1 | [📖 **Live HTML** (All Q&A)](https://boobalakrishnan89.github.io/qa-interview-preparation/) | Interactive 200-question document with search & filters | 200 |
 | 2 | [Senior Interview Q&A](onsurity_java_playwright_interview_qa.md) | Framework + Generic QA (Markdown) | 75 |
 | 3 | [CI/CD Setup & Configuration](cicd_documentation.md) | Complete CI/CD pipeline documentation | — |
 
@@ -97,6 +97,36 @@ Sourced from 2025/2026 interview trends at FAANG, FinTech, and top-tier companie
 | Docker | Multi-stage | Containerized execution |
 | GitHub Actions | v4 | CI/CD pipelines |
 | Maven | 3.9.x | Build tool |
+### Part D: SQL for QA (Q151–Q180)
+30 SQL questions for database testing and validation:
+
+| Section | Questions | Topics |
+|---|---|---|
+| Joins & Self Joins | Q151–Q152 | INNER/LEFT/RIGHT/FULL, Anti-joins, Employee-Manager |
+| Subqueries & CTEs | Q153–Q154 | Correlated subqueries, Recursive CTEs |
+| Window Functions | Q155–Q157 | ROW_NUMBER/RANK/DENSE_RANK, LAG/LEAD, Running totals |
+| Classic SQL Problems | Q158–Q161 | Nth salary, duplicates, gaps & islands, dept averages |
+| Query Optimization | Q162–Q163 | EXPLAIN plans, Clustered vs Non-clustered indexes |
+| ACID & Transactions | Q164–Q165 | Transaction testing, Isolation levels |
+| Database Testing | Q166–Q167 | API vs DB validation, Data migration testing |
+| Advanced SQL | Q168–Q170 | Stored Procedures, Views, Triggers |
+| Query Patterns | Q171–Q178 | NULLs, UNION, GROUP BY, CASE, EXISTS vs IN, Pivot, Strings, Dates |
+| MongoDB | Q179–Q180 | SQL vs MongoDB, Aggregation pipeline |
+
+### Part E: CI/CD & DevOps (Q181–Q200)
+20 CI/CD questions for QA lead roles:
+
+| Section | Questions | Topics |
+|---|---|---|
+| Pipeline Architecture | Q181–Q183 | CI vs CD, Pipeline design, Quality gates |
+| GitHub Actions | Q184–Q186 | Workflows, Matrix strategy, Artifacts & secrets |
+| Docker | Q187–Q188 | Multi-stage builds, Docker Compose for QA |
+| Deployment Strategies | Q189–Q190 | Blue-Green, Canary, Rolling, Rollback |
+| Kubernetes | Q191 | Pods, Deployments, Services |
+| Testing in CI/CD | Q192–Q194 | Test pyramid integration, Flaky tests, Shift-Left |
+| Jenkins | Q195–Q196 | Jenkins vs GitHub Actions, Declarative pipeline |
+| Security & Monitoring | Q197–Q198 | Secret management, Post-deploy verification |
+| Advanced | Q199–Q200 | GitOps, Ephemeral environments |
 
 ---
 
@@ -106,8 +136,10 @@ Sourced from 2025/2026 interview trends at FAANG, FinTech, and top-tier companie
    - 🔵 **Part A** — Framework-specific depth (Q1–Q35)
    - 🟣 **Part B** — Generic senior QA breadth (Q36–Q75)
    - 🟠 **Part C** — Java programming & coding (Q76–Q150)
+   - 🟢 **Part D** — SQL queries & database testing (Q151–Q180)
+   - 🔷 **Part E** — CI/CD & DevOps (Q181–Q200)
 2. **CI/CD Reference** — Use the [CI/CD documentation](cicd_documentation.md) for pipeline setup questions.
-3. **Search** — Press `⌘K` on the HTML page to instantly search all 150 questions.
+3. **Search** — Press `⌘K` on the HTML page to instantly search all 200 questions.
 
 ---
 
