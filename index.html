@@ -215,6 +215,7 @@
         .section-header.part-e { border-left: 4px solid #58a6ff; }
         .section-header.part-f { border-left: 4px solid #f97583; }
         .section-header.part-g { border-left: 4px solid #d2a8ff; }
+        .section-header.part-h { border-left: 4px solid #f0883e; }
         .section-icon { font-size: 28px; }
         .section-title { font-size: 18px; font-weight: 700; }
         .section-desc { font-size: 13px; color: var(--text-secondary); }
@@ -247,6 +248,7 @@
         .qa-card.part-e .qa-number { background: rgba(88,166,255,.1); color: #58a6ff; }
         .qa-card.part-f .qa-number { background: rgba(249,117,131,.1); color: #f97583; }
         .qa-card.part-g .qa-number { background: rgba(210,168,255,.1); color: #d2a8ff; }
+        .qa-card.part-h .qa-number { background: rgba(240,136,62,.1); color: #f0883e; }
 
         .qa-question { flex: 1; font-weight: 600; font-size: 15px; line-height: 1.5; }
         .qa-category {
@@ -261,10 +263,7 @@
         }
         .qa-level.senior { background: linear-gradient(135deg, rgba(255,140,50,.15), rgba(255,80,80,.15)); color: #f0a050; border: 1px solid rgba(255,140,50,.2); }
         .qa-level.mid { background: linear-gradient(135deg, rgba(80,200,180,.15), rgba(50,180,220,.15)); color: #50c8b4; border: 1px solid rgba(80,200,180,.2); }
-        .level-filter { display: flex; gap: 6px; align-items: center; margin-left: 8px; padding-left: 8px; border-left: 1px solid var(--border); }
-        .level-btn { font-size: 11px; padding: 4px 10px; border-radius: 16px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
-        .level-btn:hover { background: var(--bg-hover); }
-        .level-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .level-filter { display: none; }
         .qa-toggle {
             width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
             border-radius: 6px; transition: all 0.2s; color: var(--text-muted); flex-shrink: 0;
@@ -335,7 +334,7 @@
         .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
 
         /* Expand/Collapse all */
-        .controls { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+        .controls { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; }
         .control-btn {
             padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border);
             background: var(--bg-card); color: var(--text-secondary);
@@ -343,6 +342,20 @@
         }
         .control-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
         .control-btn.active { background: var(--accent-glow); color: var(--accent); border-color: var(--accent); }
+        .filter-group { display: flex; align-items: center; gap: 8px; }
+        .filter-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .filter-select {
+            padding: 8px 32px 8px 12px; border-radius: 10px; border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text-primary); font-size: 13px;
+            font-family: inherit; cursor: pointer; transition: all 0.2s;
+            appearance: none; -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2358a6ff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 10px center;
+        }
+        .filter-select:hover { border-color: var(--accent); }
+        .filter-select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+        .filter-divider { width: 1px; height: 28px; background: var(--border); margin: 0 4px; }
+        .filter-count { font-size: 12px; color: var(--text-muted); padding: 4px 10px; border-radius: 16px; background: var(--bg-hover); font-weight: 600; white-space: nowrap; }
 
         /* Back to top */
         .back-to-top {
@@ -1746,13 +1759,65 @@ questions.push(
 {id:392,part:"G",level:"Mid",category:"Postman",q:"Postman pre-request and test scripts.",a:`<pre><code>// Pre-request Script\npm.variables.set("timestamp", Date.now());\npm.variables.set("email",\n    "test_" + Math.random().toString(36).substr(2) + "@test.com");\n\n// Test Script\npm.test("Status 200", () =&gt; {\n    pm.response.to.have.status(200);\n});\npm.test("Response time", () =&gt; {\n    pm.expect(pm.response.responseTime).to.be.below(2000);\n});\npm.test("Has fields", () =&gt; {\n    let json = pm.response.json();\n    pm.expect(json).to.have.property("id");\n});</code></pre>`}
 );
 
+// ──────────── PART H — SELENIUM WEBDRIVER ────────────
+questions.push(
+// ═══════ SENIOR LEVEL (10+ yr) ═══════
+{id:393,part:"H",level:"Senior",category:"Architecture",q:"Explain Selenium WebDriver architecture — how does it communicate with the browser?",a:`<h4>Selenium WebDriver Architecture</h4><pre><code>Test Script (Java) → WebDriver API → Browser Driver (ChromeDriver)\n                                        ↓\n                                   HTTP Commands (W3C Protocol)\n                                        ↓\n                                   Real Browser (Chrome)</code></pre><table><tr><th>Component</th><th>Role</th></tr><tr><td>WebDriver API</td><td>Language bindings (Java, Python, etc.)</td></tr><tr><td>JSON Wire / W3C Protocol</td><td>HTTP commands sent to driver</td></tr><tr><td>Browser Driver</td><td>Translates commands to browser actions</td></tr><tr><td>Real Browser</td><td>Executes actions, returns responses</td></tr></table><p><strong>Selenium 4:</strong> Uses W3C WebDriver Protocol (replaces JSON Wire Protocol).</p>`},
+{id:394,part:"H",level:"Senior",category:"Architecture",q:"Selenium vs Playwright — when to choose which?",a:`<table><tr><th>Feature</th><th>Selenium</th><th>Playwright</th></tr><tr><td>Protocol</td><td>W3C WebDriver</td><td>CDP / custom</td></tr><tr><td>Auto-wait</td><td>❌ Manual waits</td><td>✅ Built-in</td></tr><tr><td>Speed</td><td>Slower (HTTP)</td><td>Faster (WebSocket)</td></tr><tr><td>Browsers</td><td>All major + Edge legacy</td><td>Chromium, Firefox, WebKit</td></tr><tr><td>iFrames</td><td>switchTo().frame()</td><td>frameLocator()</td></tr><tr><td>Network mock</td><td>❌ Not built-in</td><td>✅ route()</td></tr><tr><td>Parallel</td><td>Selenium Grid</td><td>Built-in contexts</td></tr><tr><td>Community</td><td>Huge, mature</td><td>Growing fast</td></tr><tr><td>Best for</td><td>Legacy apps, wide browser support</td><td>Modern apps, speed</td></tr></table>`},
+{id:395,part:"H",level:"Senior",category:"Waits",q:"Explain all types of waits in Selenium — Implicit, Explicit, Fluent.",a:`<pre><code>// 1. Implicit Wait — global, fixed timeout\ndriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));\n\n// 2. Explicit Wait — specific condition\nWebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));\nWebElement el = wait.until(\n    ExpectedConditions.visibilityOfElementLocated(By.id("result")));\n\n// 3. Fluent Wait — polling + ignore exceptions\nWait&lt;WebDriver&gt; fluentWait = new FluentWait&lt;&gt;(driver)\n    .withTimeout(Duration.ofSeconds(30))\n    .pollingEvery(Duration.ofMillis(500))\n    .ignoring(NoSuchElementException.class);\n\nWebElement el = fluentWait.until(d -&gt;\n    d.findElement(By.id("dynamic-content")));</code></pre><div class="important"><span class="tip-icon">❗</span><div><strong>Never mix</strong> implicit and explicit waits — leads to unpredictable timeouts.</div></div>`},
+{id:396,part:"H",level:"Senior",category:"Grid",q:"Selenium Grid 4 architecture — Hub, Node, Distributor, Router.",a:`<pre><code>// Selenium Grid 4 Components:\n// Router → receives requests\n// Distributor → assigns sessions to nodes\n// Session Map → tracks active sessions\n// Node → runs browser instances\n\n// Start Grid (standalone)\njava -jar selenium-server-4.x.jar standalone\n\n// Start Hub + Node separately\njava -jar selenium-server-4.x.jar hub\njava -jar selenium-server-4.x.jar node --hub http://hub:4444\n\n// Remote WebDriver\nWebDriver driver = new RemoteWebDriver(\n    new URL("http://grid-hub:4444"),\n    new ChromeOptions());</code></pre><p><strong>Docker Grid:</strong></p><pre><code># docker-compose.yml\nservices:\n  hub:\n    image: selenium/hub:4.x\n  chrome:\n    image: selenium/node-chrome:4.x\n    depends_on: [hub]\n    environment:\n      - SE_EVENT_BUS_HOST=hub</code></pre>`},
+{id:397,part:"H",level:"Senior",category:"POM",q:"Implement a robust Page Object Model with PageFactory.",a:`<pre><code>public class LoginPage {\n    private WebDriver driver;\n\n    @FindBy(id = "username") private WebElement usernameField;\n    @FindBy(id = "password") private WebElement passwordField;\n    @FindBy(css = "button[type='submit']") private WebElement loginBtn;\n    @FindBy(css = ".error-message") private WebElement errorMsg;\n\n    public LoginPage(WebDriver driver) {\n        this.driver = driver;\n        PageFactory.initElements(driver, this);\n    }\n\n    public DashboardPage login(String user, String pass) {\n        usernameField.clear();\n        usernameField.sendKeys(user);\n        passwordField.clear();\n        passwordField.sendKeys(pass);\n        loginBtn.click();\n        return new DashboardPage(driver);\n    }\n\n    public String getErrorMessage() {\n        return new WebDriverWait(driver, Duration.ofSeconds(5))\n            .until(ExpectedConditions.visibilityOf(errorMsg))\n            .getText();\n    }\n}</code></pre>`},
+{id:398,part:"H",level:"Senior",category:"Advanced",q:"JavaScript Executor — when and how to use it?",a:`<pre><code>JavascriptExecutor js = (JavascriptExecutor) driver;\n\n// Click when regular click fails\njs.executeScript("arguments[0].click();", element);\n\n// Scroll into view\njs.executeScript("arguments[0].scrollIntoView(true);", element);\n\n// Scroll to bottom\njs.executeScript("window.scrollTo(0, document.body.scrollHeight);");\n\n// Get page title\nString title = (String) js.executeScript("return document.title;");\n\n// Highlight element (debugging)\njs.executeScript(\n    "arguments[0].style.border='3px solid red';", element);\n\n// Set hidden input value\njs.executeScript(\n    "arguments[0].value = 'new value';", hiddenInput);\n\n// Wait for page load\njs.executeScript(\n    "return document.readyState").equals("complete");</code></pre>`},
+{id:399,part:"H",level:"Senior",category:"Advanced",q:"Actions class — complex mouse and keyboard interactions.",a:`<pre><code>Actions actions = new Actions(driver);\n\n// Hover\nactions.moveToElement(menuItem).perform();\n\n// Drag and drop\nactions.dragAndDrop(source, target).perform();\n\n// Right-click (context menu)\nactions.contextClick(element).perform();\n\n// Double-click\nactions.doubleClick(element).perform();\n\n// Chain of actions\nactions.moveToElement(slider)\n    .clickAndHold()\n    .moveByOffset(100, 0)\n    .release()\n    .perform();\n\n// Key combinations\nactions.keyDown(Keys.CONTROL)\n    .sendKeys("a")\n    .keyUp(Keys.CONTROL)\n    .perform();</code></pre>`},
+{id:400,part:"H",level:"Senior",category:"Selenium4",q:"Selenium 4 new features — what changed from Selenium 3?",a:`<table><tr><th>Feature</th><th>Selenium 3</th><th>Selenium 4</th></tr><tr><td>Protocol</td><td>JSON Wire</td><td>W3C WebDriver</td></tr><tr><td>Relative locators</td><td>❌</td><td>✅ above, below, near</td></tr><tr><td>Chrome DevTools</td><td>❌</td><td>✅ CDP integration</td></tr><tr><td>New tab/window</td><td>JS workaround</td><td>driver.switchTo().newWindow()</td></tr><tr><td>Element screenshot</td><td>Full page only</td><td>element.getScreenshotAs()</td></tr><tr><td>Grid</td><td>Hub/Node</td><td>Distributed + Docker</td></tr></table><pre><code>// Relative locators (Selenium 4)\nWebElement email = driver.findElement(By.id("email"));\nWebElement password = driver.findElement(\n    RelativeLocator.with(By.tagName("input"))\n        .below(email));</code></pre>`},
+{id:401,part:"H",level:"Senior",category:"Selenium4",q:"Chrome DevTools Protocol (CDP) in Selenium 4.",a:`<pre><code>// Enable network interception\nDevTools devTools = ((ChromeDriver) driver).getDevTools();\ndevTools.createSession();\n\n// Mock geolocation\ndevTools.send(Emulation.setGeolocationOverride(\n    Optional.of(13.08), Optional.of(80.27), Optional.of(1)));\n\n// Network conditions (throttle)\ndevTools.send(Network.emulateNetworkConditions(\n    false, 100, 5000, 2000,\n    Optional.of(ConnectionType.CELLULAR3G)));\n\n// Console logs\ndevTools.send(Log.enable());\ndevTools.addListener(Log.entryAdded(), entry -&gt; {\n    System.out.println(entry.getText());\n});\n\n// Performance metrics\ndevTools.send(Performance.enable(Optional.empty()));\nList&lt;Metric&gt; metrics = devTools.send(Performance.getMetrics());</code></pre>`},
+{id:402,part:"H",level:"Senior",category:"Exceptions",q:"Common Selenium exceptions and how to handle them.",a:`<table><tr><th>Exception</th><th>Cause</th><th>Solution</th></tr><tr><td>NoSuchElementException</td><td>Element not in DOM</td><td>Use Explicit Wait</td></tr><tr><td>StaleElementReferenceException</td><td>Element re-rendered</td><td>Re-find the element</td></tr><tr><td>ElementNotInteractableException</td><td>Hidden/overlapped</td><td>Scroll or wait for visibility</td></tr><tr><td>TimeoutException</td><td>Wait condition not met</td><td>Increase timeout or fix locator</td></tr><tr><td>NoAlertPresentException</td><td>No alert open</td><td>Wait for alert</td></tr><tr><td>SessionNotCreatedException</td><td>Driver/browser mismatch</td><td>Update ChromeDriver</td></tr><tr><td>InvalidSelectorException</td><td>Bad XPath/CSS</td><td>Fix locator syntax</td></tr></table>`},
+{id:403,part:"H",level:"Senior",category:"Patterns",q:"Thread-safe WebDriver for parallel execution.",a:`<pre><code>public class DriverManager {\n    private static final ThreadLocal&lt;WebDriver&gt; driver =\n        new ThreadLocal&lt;&gt;();\n\n    public static WebDriver getDriver() {\n        return driver.get();\n    }\n\n    public static void setDriver(WebDriver d) {\n        driver.set(d);\n    }\n\n    public static void quit() {\n        if (driver.get() != null) {\n            driver.get().quit();\n            driver.remove();\n        }\n    }\n}\n\n// In BaseTest\n@BeforeMethod\npublic void setup() {\n    DriverManager.setDriver(new ChromeDriver());\n}\n\n@AfterMethod\npublic void tearDown() {\n    DriverManager.quit();\n}</code></pre>`},
+{id:404,part:"H",level:"Senior",category:"Advanced",q:"Handling multiple windows and tabs.",a:`<pre><code>// Get current window\nString mainWindow = driver.getWindowHandle();\n\n// Click link that opens new tab\ndriver.findElement(By.linkText("Open New")).click();\n\n// Switch to new window\nSet&lt;String&gt; handles = driver.getWindowHandles();\nfor (String handle : handles) {\n    if (!handle.equals(mainWindow)) {\n        driver.switchTo().window(handle);\n        break;\n    }\n}\n\n// Selenium 4 — open new tab/window directly\ndriver.switchTo().newWindow(WindowType.TAB);\ndriver.get("https://example.com");\n\n// Switch back\ndriver.switchTo().window(mainWindow);\n\n// Close current, switch back\ndriver.close();\ndriver.switchTo().window(mainWindow);</code></pre>`},
+{id:405,part:"H",level:"Senior",category:"Advanced",q:"File upload and download strategies.",a:`<pre><code>// Upload — sendKeys to input[type='file']\nWebElement upload = driver.findElement(By.id("file-input"));\nupload.sendKeys("/path/to/file.pdf");\n\n// Upload via Robot class (native dialog)\nRobot robot = new Robot();\nStringSelection path = new StringSelection("/path/to/file.pdf");\nToolkit.getDefaultToolkit().getSystemClipboard()\n    .setContents(path, null);\nrobot.keyPress(KeyEvent.VK_CONTROL);\nrobot.keyPress(KeyEvent.VK_V);\nrobot.keyRelease(KeyEvent.VK_V);\nrobot.keyRelease(KeyEvent.VK_CONTROL);\nrobot.keyPress(KeyEvent.VK_ENTER);\n\n// Download — set Chrome prefs\nChromeOptions options = new ChromeOptions();\nMap&lt;String, Object&gt; prefs = new HashMap&lt;&gt;();\nprefs.put("download.default_directory", "/downloads");\nprefs.put("download.prompt_for_download", false);\noptions.setExperimentalOption("prefs", prefs);</code></pre>`},
+{id:406,part:"H",level:"Senior",category:"Advanced",q:"How do you handle Shadow DOM elements?",a:`<pre><code>// Selenium 4 — getShadowRoot()\nWebElement host = driver.findElement(By.cssSelector("my-component"));\nSearchContext shadow = host.getShadowRoot();\nWebElement innerBtn = shadow.findElement(By.cssSelector("button"));\ninnerBtn.click();\n\n// JavaScript fallback (Selenium 3)\nJavascriptExecutor js = (JavascriptExecutor) driver;\nWebElement el = (WebElement) js.executeScript(\n    "return document.querySelector('my-component')" +\n    ".shadowRoot.querySelector('button')");\nel.click();</code></pre>`},
+{id:407,part:"H",level:"Senior",category:"Testing",q:"Data-driven testing with Selenium + TestNG DataProvider.",a:`<pre><code>@DataProvider(name = "loginData")\npublic Object[][] credentials() {\n    return new Object[][] {\n        {"admin", "admin123", true},\n        {"user", "wrong", false},\n        {"", "", false},\n        {"admin", "", false}\n    };\n}\n\n@Test(dataProvider = "loginData")\npublic void testLogin(String user, String pass, boolean expected) {\n    LoginPage login = new LoginPage(driver);\n    login.enterUsername(user);\n    login.enterPassword(pass);\n    login.clickSubmit();\n\n    if (expected) {\n        assertTrue(new DashboardPage(driver).isDisplayed());\n    } else {\n        assertTrue(login.isErrorDisplayed());\n    }\n}</code></pre>`},
+{id:408,part:"H",level:"Senior",category:"Patterns",q:"Implementing the Screenplay pattern over Page Objects.",a:`<pre><code>// Traditional POM\nloginPage.enterUsername("admin");\nloginPage.enterPassword("pass");\nloginPage.clickLogin();\n\n// Screenplay pattern (behavior-driven)\nactor.attemptsTo(\n    Navigate.to(LoginPage.URL),\n    Enter.theValue("admin").into(LoginPage.USERNAME),\n    Enter.theValue("pass").into(LoginPage.PASSWORD),\n    Click.on(LoginPage.LOGIN_BUTTON)\n);\n\n// Benefits:\n// 1. Reads like English\n// 2. Tasks are reusable across tests\n// 3. Better separation of concerns\n// 4. Easier to maintain at scale</code></pre>`},
+{id:409,part:"H",level:"Senior",category:"Reporting",q:"Integrating ExtentReports with Selenium + TestNG.",a:`<pre><code>public class ExtentManager {\n    private static ExtentReports extent;\n    private static ThreadLocal&lt;ExtentTest&gt; test = new ThreadLocal&lt;&gt;();\n\n    public static void initReport() {\n        extent = new ExtentReports();\n        extent.attachReporter(new ExtentSparkReporter("report.html"));\n    }\n\n    public static ExtentTest getTest() { return test.get(); }\n\n    public static void createTest(String name) {\n        test.set(extent.createTest(name));\n    }\n\n    public static void flush() { extent.flush(); }\n}\n\n// Listener\npublic class TestListener implements ITestListener {\n    @Override\n    public void onTestSuccess(ITestResult result) {\n        ExtentManager.getTest().pass("Test passed");\n    }\n    @Override\n    public void onTestFailure(ITestResult result) {\n        ExtentManager.getTest().fail(result.getThrowable());\n        // Attach screenshot\n    }\n}</code></pre>`},
+{id:410,part:"H",level:"Senior",category:"Advanced",q:"Headless browser testing — pros, cons, configuration.",a:`<pre><code>// Chrome headless\nChromeOptions options = new ChromeOptions();\noptions.addArguments("--headless=new"); // Selenium 4\noptions.addArguments("--window-size=1920,1080");\noptions.addArguments("--disable-gpu");\noptions.addArguments("--no-sandbox");\nWebDriver driver = new ChromeDriver(options);\n\n// Firefox headless\nFirefoxOptions ffOptions = new FirefoxOptions();\nffOptions.addArguments("--headless");\nWebDriver driver = new FirefoxDriver(ffOptions);</code></pre><table><tr><th>Pros</th><th>Cons</th></tr><tr><td>Faster execution</td><td>Can't see what happens</td></tr><tr><td>No GPU needed</td><td>Some rendering differences</td></tr><tr><td>CI/CD friendly</td><td>Harder to debug</td></tr><tr><td>Less resources</td><td>Some JS may behave differently</td></tr></table>`},
+{id:411,part:"H",level:"Senior",category:"Advanced",q:"WebDriverManager — automatic driver management.",a:`<pre><code>// Old way — manual driver setup\nSystem.setProperty("webdriver.chrome.driver",\n    "/path/to/chromedriver");\nWebDriver driver = new ChromeDriver();\n\n// New way — WebDriverManager (Boni Garcia)\n// pom.xml: io.github.bonigarcia:webdrivermanager\nWebDriverManager.chromedriver().setup();\nWebDriver driver = new ChromeDriver();\n\n// Selenium 4.6+ — built-in Selenium Manager\n// No setup needed! Just:\nWebDriver driver = new ChromeDriver();\n// Selenium Manager auto-downloads the correct driver</code></pre><div class="tip"><span class="tip-icon">💡</span><div>Since Selenium 4.6+, Selenium Manager handles driver downloads automatically. No more manual setup!</div></div>`},
+{id:412,part:"H",level:"Senior",category:"Framework",q:"Build a complete Selenium framework from scratch — key components.",a:`<pre><code>selenium-framework/\n├── pom.xml\n├── src/test/java/\n│   ├── base/\n│   │   ├── BaseTest.java          // Driver init, teardown\n│   │   └── DriverFactory.java     // ThreadLocal drivers\n│   ├── pages/\n│   │   ├── BasePage.java          // Common actions\n│   │   ├── LoginPage.java\n│   │   └── DashboardPage.java\n│   ├── tests/\n│   │   ├── LoginTest.java\n│   │   └── CheckoutTest.java\n│   ├── utils/\n│   │   ├── ConfigReader.java\n│   │   ├── WaitHelper.java\n│   │   ├── ScreenshotUtils.java\n│   │   └── RetryAnalyzer.java\n│   └── listeners/\n│       ├── TestListener.java\n│       └── ExtentReportListener.java\n├── testng.xml\n├── config.properties\n└── testdata/\n    └── testdata-qa.json</code></pre>`},
+{id:413,part:"H",level:"Senior",category:"Advanced",q:"How do you handle dynamic web tables in Selenium?",a:`<pre><code>// Get all rows\nList&lt;WebElement&gt; rows = driver.findElements(\n    By.cssSelector("table#data tbody tr"));\n\n// Get specific cell (row 2, col 3)\nString cell = driver.findElement(\n    By.cssSelector("table#data tr:nth-child(2) td:nth-child(3)"))\n    .getText();\n\n// Iterate and find row by value\nfor (WebElement row : rows) {\n    List&lt;WebElement&gt; cols = row.findElements(By.tagName("td"));\n    if (cols.get(1).getText().equals("Boobala")) {\n        cols.get(4).findElement(By.tagName("button")).click();\n        break;\n    }\n}\n\n// Get entire table as List of Maps\nList&lt;Map&lt;String, String&gt;&gt; tableData = new ArrayList&lt;&gt;();\nList&lt;WebElement&gt; headers = driver.findElements(\n    By.cssSelector("table#data th"));</code></pre>`},
+{id:414,part:"H",level:"Senior",category:"Locators",q:"XPath vs CSS selectors — performance and best practices.",a:`<table><tr><th></th><th>CSS Selector</th><th>XPath</th></tr><tr><td>Speed</td><td>Faster</td><td>Slightly slower</td></tr><tr><td>Text match</td><td>❌ Not supported</td><td>✅ text(), contains()</td></tr><tr><td>Traversal</td><td>Child only (>)</td><td>Parent, sibling, ancestor</td></tr><tr><td>Readability</td><td>Simple</td><td>Complex but powerful</td></tr><tr><td>Shadow DOM</td><td>✅ Works</td><td>❌ Doesn't work</td></tr></table><pre><code>// CSS examples\n"#login"            // by ID\n".btn-primary"      // by class\n"input[name='user']" // by attribute\n"div > span"        // direct child\n\n// XPath examples\n"//input[@id='user']"\n"//button[text()='Login']"\n"//div[contains(@class,'error')]"\n"//input[@id='pass']/parent::div"</code></pre>`},
+{id:415,part:"H",level:"Senior",category:"Advanced",q:"How to handle StaleElementReferenceException robustly?",a:`<pre><code>// Strategy 1: Re-find the element\npublic WebElement findWithRetry(By locator, int maxRetries) {\n    for (int i = 0; i &lt; maxRetries; i++) {\n        try {\n            return driver.findElement(locator);\n        } catch (StaleElementReferenceException e) {\n            // Element was detached, retry\n        }\n    }\n    throw new RuntimeException("Element still stale after " + maxRetries + " retries");\n}\n\n// Strategy 2: Wait for staleness then re-find\nwait.until(ExpectedConditions.stalenessOf(oldElement));\nWebElement fresh = driver.findElement(By.id("my-element"));\n\n// Strategy 3: Always use locators, never cache elements\n// ❌ Bad: WebElement btn = driver.findElement(...);\n//         navigate();\n//         btn.click(); // STALE!\n// ✅ Good: driver.findElement(By.id("btn")).click();</code></pre>`},
+{id:416,part:"H",level:"Senior",category:"Grid",q:"Running Selenium tests in Docker containers.",a:`<pre><code># docker-compose.yml for Selenium Grid\nversion: '3'\nservices:\n  hub:\n    image: selenium/hub:4.x\n    ports: ["4444:4444"]\n  chrome:\n    image: selenium/node-chrome:4.x\n    depends_on: [hub]\n    environment:\n      - SE_EVENT_BUS_HOST=hub\n      - SE_EVENT_BUS_PUBLISH_PORT=4442\n      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443\n    shm_size: '2gb'\n  firefox:\n    image: selenium/node-firefox:4.x\n    depends_on: [hub]\n    environment:\n      - SE_EVENT_BUS_HOST=hub\n      - SE_EVENT_BUS_PUBLISH_PORT=4442\n      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443\n\n# Start: docker-compose up -d\n# Scale: docker-compose up -d --scale chrome=3</code></pre>`},
+{id:417,part:"H",level:"Senior",category:"Advanced",q:"How do you capture network traffic with Selenium 4?",a:`<pre><code>DevTools devTools = ((ChromeDriver) driver).getDevTools();\ndevTools.createSession();\n\n// Enable network tracking\ndevTools.send(Network.enable(Optional.empty(),\n    Optional.empty(), Optional.empty()));\n\nList&lt;String&gt; requestUrls = new ArrayList&lt;&gt;();\n\n// Listen to requests\ndevTools.addListener(Network.requestWillBeSent(), request -&gt; {\n    requestUrls.add(request.getRequest().getUrl());\n    System.out.println("Request: " + request.getRequest().getUrl());\n});\n\n// Listen to responses\ndevTools.addListener(Network.responseReceived(), response -&gt; {\n    System.out.println("Status: " + response.getResponse().getStatus());\n});\n\ndriver.get("https://example.com");\n// requestUrls now contains all network requests</code></pre>`},
+
+// ═══════ MID LEVEL (5-7 yr) ═══════
+{id:418,part:"H",level:"Mid",category:"Basics",q:"How do you set up Selenium WebDriver in a Java project?",a:`<pre><code>// 1. Add Maven dependency\n&lt;dependency&gt;\n    &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;\n    &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;\n    &lt;version&gt;4.20.0&lt;/version&gt;\n&lt;/dependency&gt;\n\n// 2. Create driver (Selenium 4.6+ — auto driver management)\nWebDriver driver = new ChromeDriver();\ndriver.get("https://example.com");\nSystem.out.println(driver.getTitle());\ndriver.quit();</code></pre>`},
+{id:419,part:"H",level:"Mid",category:"Locators",q:"All 8 locator strategies in Selenium.",a:`<pre><code>driver.findElement(By.id("username"));          // By ID\ndriver.findElement(By.name("email"));            // By name\ndriver.findElement(By.className("btn-primary")); // By class\ndriver.findElement(By.tagName("input"));         // By tag\ndriver.findElement(By.linkText("Click Here"));   // Full link text\ndriver.findElement(By.partialLinkText("Click")); // Partial link\ndriver.findElement(By.cssSelector("#login"));    // CSS selector\ndriver.findElement(By.xpath("//input[@id='user']")); // XPath\n\n// Priority order:\n// 1. ID → 2. Name → 3. CSS → 4. XPath</code></pre>`},
+{id:420,part:"H",level:"Mid",category:"Basics",q:"findElement vs findElements — what's the difference?",a:`<table><tr><th></th><th>findElement()</th><th>findElements()</th></tr><tr><td>Returns</td><td>Single WebElement</td><td>List&lt;WebElement&gt;</td></tr><tr><td>Not found</td><td>NoSuchElementException</td><td>Empty list (no exception)</td></tr><tr><td>Multiple matches</td><td>Returns first match</td><td>Returns all matches</td></tr></table><pre><code>// Check if element exists (no exception)\nboolean exists = driver.findElements(By.id("popup")).size() &gt; 0;\n\n// Count elements\nint count = driver.findElements(By.cssSelector(".item")).size();\n\n// Get all links\nList&lt;WebElement&gt; links = driver.findElements(By.tagName("a"));</code></pre>`},
+{id:421,part:"H",level:"Mid",category:"Basics",q:"How do you handle alerts in Selenium?",a:`<pre><code>// Switch to alert\nAlert alert = driver.switchTo().alert();\n\n// Accept (OK)\nalert.accept();\n\n// Dismiss (Cancel)\nalert.dismiss();\n\n// Get alert text\nString text = alert.getText();\n\n// Enter text (prompt)\nalert.sendKeys("My Answer");\nalert.accept();\n\n// Wait for alert\nnew WebDriverWait(driver, Duration.ofSeconds(5))\n    .until(ExpectedConditions.alertIsPresent());</code></pre>`},
+{id:422,part:"H",level:"Mid",category:"Basics",q:"How do you handle dropdowns with Select class?",a:`<pre><code>WebElement dropdown = driver.findElement(By.id("country"));\nSelect select = new Select(dropdown);\n\n// Select by visible text\nselect.selectByVisibleText("India");\n\n// Select by value attribute\nselect.selectByValue("IN");\n\n// Select by index (0-based)\nselect.selectByIndex(2);\n\n// Get selected option\nString selected = select.getFirstSelectedOption().getText();\n\n// Get all options\nList&lt;WebElement&gt; options = select.getOptions();\n\n// Check if multi-select\nboolean isMulti = select.isMultiple();\n\n// Deselect (multi-select only)\nselect.deselectAll();</code></pre>`},
+{id:423,part:"H",level:"Mid",category:"Frames",q:"Switching between frames and iframes.",a:`<pre><code>// Switch by index\ndriver.switchTo().frame(0);\n\n// Switch by name or ID\ndriver.switchTo().frame("payment-frame");\n\n// Switch by WebElement\nWebElement iframe = driver.findElement(By.cssSelector("iframe.ad"));\ndriver.switchTo().frame(iframe);\n\n// ⚠️ Always switch back to main content\ndriver.switchTo().defaultContent();\n\n// Switch to parent frame\ndriver.switchTo().parentFrame();\n\n// Nested frames\ndriver.switchTo().frame("outer");\ndriver.switchTo().frame("inner");\n// ... interact ...\ndriver.switchTo().defaultContent();</code></pre>`},
+{id:424,part:"H",level:"Mid",category:"Basics",q:"How do you take screenshots in Selenium?",a:`<pre><code>// Full page screenshot\nTakesScreenshot ts = (TakesScreenshot) driver;\nFile src = ts.getScreenshotAs(OutputType.FILE);\nFiles.copy(src.toPath(), Path.of("screenshot.png"));\n\n// Element screenshot (Selenium 4)\nWebElement element = driver.findElement(By.id("chart"));\nFile elemShot = element.getScreenshotAs(OutputType.FILE);\n\n// As Base64 (for reports)\nString base64 = ts.getScreenshotAs(OutputType.BASE64);\n\n// As byte array\nbyte[] bytes = ts.getScreenshotAs(OutputType.BYTES);</code></pre>`},
+{id:425,part:"H",level:"Mid",category:"Basics",q:"How do you handle browser navigation?",a:`<pre><code>// Navigate to URL\ndriver.get("https://example.com");\ndriver.navigate().to("https://example.com");\n\n// Back / Forward / Refresh\ndriver.navigate().back();\ndriver.navigate().forward();\ndriver.navigate().refresh();\n\n// Get current URL\nString url = driver.getCurrentUrl();\n\n// Get page title\nString title = driver.getTitle();\n\n// Get page source\nString source = driver.getPageSource();\n\n// Maximize window\ndriver.manage().window().maximize();\n\n// Set window size\ndriver.manage().window().setSize(new Dimension(1920, 1080));</code></pre>`},
+{id:426,part:"H",level:"Mid",category:"Basics",q:"Handling checkboxes and radio buttons.",a:`<pre><code>WebElement checkbox = driver.findElement(By.id("agree"));\n\n// Check if selected\nif (!checkbox.isSelected()) {\n    checkbox.click();\n}\n\n// Radio button\nWebElement radio = driver.findElement(\n    By.cssSelector("input[value='premium']"));\nradio.click();\n\n// Verify state\nassertTrue(checkbox.isSelected());\nassertTrue(radio.isSelected());\n\n// Check if enabled\nboolean enabled = checkbox.isEnabled();\n\n// Check if displayed\nboolean visible = checkbox.isDisplayed();</code></pre>`},
+{id:427,part:"H",level:"Mid",category:"Basics",q:"How do you manage cookies in Selenium?",a:`<pre><code>// Get all cookies\nSet&lt;Cookie&gt; cookies = driver.manage().getCookies();\n\n// Get specific cookie\nCookie sessionCookie = driver.manage().getCookieNamed("session_id");\n\n// Add cookie\ndriver.manage().addCookie(new Cookie("test", "value"));\n\n// Delete specific cookie\ndriver.manage().deleteCookieNamed("session_id");\n\n// Delete all cookies\ndriver.manage().deleteAllCookies();\n\n// Cookie details\nString value = sessionCookie.getValue();\nString domain = sessionCookie.getDomain();\nDate expiry = sessionCookie.getExpiry();</code></pre>`},
+{id:428,part:"H",level:"Mid",category:"Waits",q:"Common ExpectedConditions you should know.",a:`<pre><code>WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));\n\n// Element visible\nwait.until(ExpectedConditions.visibilityOfElementLocated(By.id("msg")));\n\n// Element clickable\nwait.until(ExpectedConditions.elementToBeClickable(By.id("btn")));\n\n// Text present\nwait.until(ExpectedConditions.textToBePresentInElementLocated(\n    By.id("status"), "Success"));\n\n// URL contains\nwait.until(ExpectedConditions.urlContains("/dashboard"));\n\n// Title contains\nwait.until(ExpectedConditions.titleContains("Home"));\n\n// Element invisible (loader gone)\nwait.until(ExpectedConditions.invisibilityOfElementLocated(\n    By.cssSelector(".spinner")));\n\n// Alert present\nwait.until(ExpectedConditions.alertIsPresent());</code></pre>`},
+{id:429,part:"H",level:"Mid",category:"Config",q:"ChromeOptions — common configurations.",a:`<pre><code>ChromeOptions options = new ChromeOptions();\n\n// Headless\noptions.addArguments("--headless=new");\n\n// Window size\noptions.addArguments("--window-size=1920,1080");\n\n// Disable notifications\noptions.addArguments("--disable-notifications");\n\n// Incognito\noptions.addArguments("--incognito");\n\n// Disable extensions\noptions.addArguments("--disable-extensions");\n\n// Download directory\nMap&lt;String, Object&gt; prefs = new HashMap&lt;&gt;();\nprefs.put("download.default_directory", "/downloads");\noptions.setExperimentalOption("prefs", prefs);\n\nWebDriver driver = new ChromeDriver(options);</code></pre>`},
+{id:430,part:"H",level:"Mid",category:"Basics",q:"getAttribute(), getText(), getCssValue() — getting element properties.",a:`<pre><code>WebElement el = driver.findElement(By.id("email"));\n\n// Get visible text\nString text = el.getText();\n\n// Get attribute value\nString placeholder = el.getAttribute("placeholder");\nString value = el.getAttribute("value");\nString href = el.getAttribute("href");\n\n// Get CSS property\nString color = el.getCssValue("color");\nString fontSize = el.getCssValue("font-size");\nString bgColor = el.getCssValue("background-color");\n\n// Get tag name\nString tag = el.getTagName(); // "input"\n\n// Get size and location\nDimension size = el.getSize();\nPoint location = el.getLocation();</code></pre>`},
+{id:431,part:"H",level:"Mid",category:"Mouse",q:"Mouse hover and right-click actions.",a:`<pre><code>Actions actions = new Actions(driver);\n\n// Hover over element\nWebElement menu = driver.findElement(By.id("menu"));\nactions.moveToElement(menu).perform();\n\n// Then click submenu\nWebElement subMenu = driver.findElement(By.id("sub-item"));\nactions.moveToElement(subMenu).click().perform();\n\n// Right-click\nactions.contextClick(element).perform();\n\n// Double-click\nactions.doubleClick(element).perform();</code></pre>`},
+{id:432,part:"H",level:"Mid",category:"Scroll",q:"Scrolling techniques in Selenium.",a:`<pre><code>JavascriptExecutor js = (JavascriptExecutor) driver;\n\n// Scroll to bottom\njs.executeScript("window.scrollTo(0, document.body.scrollHeight)");\n\n// Scroll to top\njs.executeScript("window.scrollTo(0, 0)");\n\n// Scroll to element\nWebElement el = driver.findElement(By.id("footer"));\njs.executeScript("arguments[0].scrollIntoView(true);", el);\n\n// Scroll by pixels\njs.executeScript("window.scrollBy(0, 500)");\n\n// Using Actions\nnew Actions(driver).scrollToElement(element).perform();\n\n// Selenium 4 — scroll with wheel\nnew Actions(driver)\n    .scrollByAmount(0, 500)\n    .perform();</code></pre>`},
+{id:433,part:"H",level:"Mid",category:"Assertions",q:"Common assertions in Selenium tests.",a:`<pre><code>// Title\nassertEquals(driver.getTitle(), "Dashboard");\n\n// URL\nassertTrue(driver.getCurrentUrl().contains("/dashboard"));\n\n// Element text\nassertEquals(element.getText(), "Welcome, Boobala");\n\n// Element visible\nassertTrue(element.isDisplayed());\n\n// Element selected\nassertTrue(checkbox.isSelected());\n\n// Element enabled\nassertTrue(button.isEnabled());\n\n// List count\nassertEquals(driver.findElements(By.cssSelector(".item")).size(), 5);\n\n// Attribute\nassertEquals(element.getAttribute("class"), "active");</code></pre>`},
+{id:434,part:"H",level:"Mid",category:"Basics",q:"driver.get() vs driver.navigate().to() — what's different?",a:`<table><tr><th></th><th>driver.get()</th><th>navigate().to()</th></tr><tr><td>Waits</td><td>Waits for page load</td><td>Waits for page load</td></tr><tr><td>History</td><td>No back/forward</td><td>Supports back/forward</td></tr><tr><td>Cookies</td><td>Same</td><td>Same</td></tr><tr><td>URL types</td><td>Full URLs</td><td>Full URLs</td></tr></table><p><strong>Key difference:</strong> <code>navigate()</code> maintains browser history, so you can use <code>back()</code> and <code>forward()</code>. In practice, they are interchangeable for loading pages.</p>`},
+{id:435,part:"H",level:"Mid",category:"Basics",q:"close() vs quit() — when to use which?",a:`<table><tr><th></th><th>close()</th><th>quit()</th></tr><tr><td>Closes</td><td>Current tab/window</td><td>All windows + driver session</td></tr><tr><td>Driver alive?</td><td>Yes (if other windows open)</td><td>No — session ends</td></tr><tr><td>Use when</td><td>Closing one popup window</td><td>End of test (teardown)</td></tr></table><pre><code>// Close popup, stay on main\ndriver.switchTo().window(popup);\ndriver.close();\ndriver.switchTo().window(main);\n\n// End everything\ndriver.quit(); // Always in @AfterMethod!</code></pre>`},
+{id:436,part:"H",level:"Mid",category:"Waits",q:"Thread.sleep() vs WebDriverWait — why never use Thread.sleep()?",a:`<table><tr><th></th><th>Thread.sleep()</th><th>WebDriverWait</th></tr><tr><td>Wait type</td><td>Fixed (unconditional)</td><td>Dynamic (conditional)</td></tr><tr><td>Wastes time?</td><td>Yes — always waits full duration</td><td>No — stops as soon as condition met</td></tr><tr><td>Reliable?</td><td>No — still may fail</td><td>Yes — polls until ready</td></tr><tr><td>Best practice?</td><td>❌ NEVER in tests</td><td>✅ Always preferred</td></tr></table><pre><code>// ❌ Bad\nThread.sleep(5000); // waits 5s even if ready in 0.5s\ndriver.findElement(By.id("btn")).click();\n\n// ✅ Good\nnew WebDriverWait(driver, Duration.ofSeconds(5))\n    .until(ExpectedConditions.elementToBeClickable(By.id("btn")))\n    .click();</code></pre>`},
+{id:437,part:"H",level:"Mid",category:"Config",q:"How do you run Selenium tests in different environments?",a:`<pre><code>// config.properties\nbase.url=https://qa.example.com\nbrowser=chrome\n\n// ConfigReader.java\npublic class ConfigReader {\n    private static Properties props = new Properties();\n    static {\n        try {\n            props.load(new FileInputStream("config.properties"));\n        } catch (IOException e) { throw new RuntimeException(e); }\n    }\n    public static String get(String key) {\n        return System.getProperty(key, props.getProperty(key));\n    }\n}\n\n// Usage\nString baseUrl = ConfigReader.get("base.url");\n\n// Override via command line\nmvn test -Dbase.url=https://staging.example.com</code></pre>`}
+);
+
 // ============================================================
 // RENDER ENGINE
 // ============================================================
 function renderSidebar() {
     const sidebar = document.getElementById('sidebar');
     let html = '';
-    const sections = {A: {}, B: {}, C: {}, D: {}, E: {}, F: {}, G: {}};
+    const sections = {A: {}, B: {}, C: {}, D: {}, E: {}, F: {}, G: {}, H: {}};
 
     questions.forEach(q => {
         const part = q.part;
@@ -1795,6 +1860,11 @@ function renderSidebar() {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#d2a8ff">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#f0883e">Part H — Selenium</div></div>';
+    questions.filter(q => q.part === 'H').forEach(q => {
+        html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#f0883e">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
+    });
+
     sidebar.innerHTML = html;
 }
 
@@ -1815,27 +1885,39 @@ function renderMain() {
             <div class="hero-stat"><div class="hero-stat-value">${totalQ}</div><div class="hero-stat-label">Total</div></div>
             <div class="hero-stat"><div class="hero-stat-value">${seniorQ}</div><div class="hero-stat-label">🔥 Senior</div></div>
             <div class="hero-stat"><div class="hero-stat-value">${midQ}</div><div class="hero-stat-label">🌱 Mid</div></div>
-            <div class="hero-stat"><div class="hero-stat-value">7</div><div class="hero-stat-label">Parts</div></div>
+            <div class="hero-stat"><div class="hero-stat-value">8</div><div class="hero-stat-label">Parts</div></div>
         </div>
     </div>`;
 
-    // Controls
+    // Controls — Dropdowns
     html += `<div class="controls">
-        <button class="control-btn" onclick="expandAll()">📖 Expand</button>
-        <button class="control-btn" onclick="collapseAll()">📕 Collapse</button>
-        <button class="control-btn" data-part="A" onclick="filterPart('A')">🔵 Framework</button>
-        <button class="control-btn" data-part="B" onclick="filterPart('B')">🟣 QA</button>
-        <button class="control-btn" data-part="C" onclick="filterPart('C')">🟠 Java</button>
-        <button class="control-btn" data-part="D" onclick="filterPart('D')">🟢 SQL</button>
-        <button class="control-btn" data-part="E" onclick="filterPart('E')">🔷 CI/CD</button>
-        <button class="control-btn" data-part="F" onclick="filterPart('F')">🎭 Playwright</button>
-        <button class="control-btn" data-part="G" onclick="filterPart('G')">🔌 API</button>
-        <button class="control-btn active" data-part="all" onclick="filterPart('all')">All ${totalQ}</button>
-        <div class="level-filter">
-            <button class="level-btn active" data-level="all" onclick="filterLevel('all')">All Levels</button>
-            <button class="level-btn" data-level="Senior" onclick="filterLevel('Senior')">🔥 Senior</button>
-            <button class="level-btn" data-level="Mid" onclick="filterLevel('Mid')">🌱 Mid</button>
+        <button class="control-btn" onclick="expandAll()">📖 Expand All</button>
+        <button class="control-btn" onclick="collapseAll()">📕 Collapse All</button>
+        <div class="filter-divider"></div>
+        <div class="filter-group">
+            <span class="filter-label">Topic</span>
+            <select class="filter-select" id="partFilter" onchange="filterPart(this.value)">
+                <option value="all">📚 All Topics (${totalQ})</option>
+                <option value="A">🔵 Part A — Framework (${questions.filter(q=>q.part==='A').length})</option>
+                <option value="B">🟣 Part B — Generic QA (${questions.filter(q=>q.part==='B').length})</option>
+                <option value="C">🟠 Part C — Java (${questions.filter(q=>q.part==='C').length})</option>
+                <option value="D">🟢 Part D — SQL (${questions.filter(q=>q.part==='D').length})</option>
+                <option value="E">🔷 Part E — CI/CD (${questions.filter(q=>q.part==='E').length})</option>
+                <option value="F">🎭 Part F — Playwright (${questions.filter(q=>q.part==='F').length})</option>
+                <option value="G">🔌 Part G — API Testing (${questions.filter(q=>q.part==='G').length})</option>
+                <option value="H">🌐 Part H — Selenium (${questions.filter(q=>q.part==='H').length})</option>
+            </select>
         </div>
+        <div class="filter-group">
+            <span class="filter-label">Level</span>
+            <select class="filter-select" id="levelFilter" onchange="filterLevel(this.value)">
+                <option value="all">All Levels</option>
+                <option value="Senior">🔥 Senior (10+ yr)</option>
+                <option value="Mid">🌱 Mid (5-7 yr)</option>
+            </select>
+        </div>
+        <div class="filter-divider"></div>
+        <span class="filter-count" id="filterCount">Showing ${totalQ} questions</span>
     </div>`;
 
     // Part A Header
@@ -1887,6 +1969,13 @@ function renderMain() {
         html += renderCard(q, i);
     });
 
+    // Part H Header
+    html += `<div class="section-header part-h"><span class="section-icon">🌐</span><div><div class="section-title">Part H — Selenium WebDriver</div><div class="section-desc">WebDriver Architecture, Locators, Waits, Grid, Actions, Selenium 4, Cross-Browser Testing, Best Practices</div></div></div>`;
+
+    questions.filter(q => q.part === 'H').forEach((q, i) => {
+        html += renderCard(q, i);
+    });
+
     main.innerHTML = html;
 }
 
@@ -1924,39 +2013,32 @@ function collapseAll() {
 }
 
 function filterPart(part) {
-    document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-    const levelFilter = document.querySelector('.level-btn.active');
-    const level = levelFilter ? levelFilter.dataset.level : 'all';
+    const level = document.getElementById('levelFilter').value;
     applyFilters(part, level);
 }
 
 function filterLevel(lvl) {
-    document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-    const partFilter = document.querySelector('.control-btn.active');
-    const part = partFilter ? (partFilter.dataset.part || 'all') : 'all';
+    const part = document.getElementById('partFilter').value;
     applyFilters(part, lvl);
 }
 
 function applyFilters(part, level) {
+    let visibleCount = 0;
     document.querySelectorAll('.qa-card').forEach(c => {
         const matchPart = part === 'all' || c.dataset.part === part;
         const matchLevel = level === 'all' || c.dataset.level === level;
-        c.style.display = (matchPart && matchLevel) ? '' : 'none';
+        const show = matchPart && matchLevel;
+        c.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
     });
     document.querySelectorAll('.section-header').forEach(h => {
         if (part === 'all') h.style.display = '';
         else {
-            h.style.display = (part === 'A' && h.classList.contains('part-a')) ||
-                              (part === 'B' && h.classList.contains('part-b')) ||
-                              (part === 'C' && h.classList.contains('part-c')) ||
-                              (part === 'D' && h.classList.contains('part-d')) ||
-                              (part === 'E' && h.classList.contains('part-e')) ||
-                              (part === 'F' && h.classList.contains('part-f')) ||
-                              (part === 'G' && h.classList.contains('part-g')) ? '' : 'none';
+            h.style.display = h.classList.contains('part-' + part.toLowerCase()) ? '' : 'none';
         }
     });
+    const counter = document.getElementById('filterCount');
+    if (counter) counter.textContent = 'Showing ' + visibleCount + ' questions';
 }
 
 function searchQuestions(query) {
