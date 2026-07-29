@@ -2594,6 +2594,483 @@ public void testPlaceOrder() {
 }</code></pre><h4>Why These Coding Skills Matter for SDET</h4><table><tr><th>Coding Concept</th><th>Where Used in Framework</th></tr><tr><td>Reverse String</td><td>Generate unique test IDs, data masking</td></tr><tr><td>Find Duplicates</td><td>Validate no duplicate entries in test data</td></tr><tr><td>Palindrome</td><td>Input validation testing</td></tr><tr><td>Character Frequency</td><td>Password strength validation</td></tr><tr><td>Two Sum</td><td>Cart total verification, discount logic</td></tr><tr><td>Remove Duplicates</td><td>Clean test data, unique assertions</td></tr><tr><td>Merge Sorted</td><td>Combine API results, merge test suites</td></tr><tr><td>Valid Parentheses</td><td>XPath/CSS selector validation</td></tr><tr><td>API Validation</td><td>Pre-condition checks, health monitoring</td></tr><tr><td>Read JSON</td><td>Test data management, config loading</td></tr></table>`}
 );
 
+// ──────────── PART S (continued) — MORE FAQ JAVA CODING ────────────
+questions.push(
+{id:726,part:"S",level:"Senior",category:"Coding",q:"✅ FizzBuzz — The classic interview warmup question in Java",a:`<h4>Standard FizzBuzz</h4><pre><code>public static List&lt;String&gt; fizzBuzz(int n) {
+    List&lt;String&gt; result = new ArrayList&lt;&gt;();
+    for (int i = 1; i <= n; i++) {
+        if (i % 15 == 0)      result.add("FizzBuzz");
+        else if (i % 3 == 0)  result.add("Fizz");
+        else if (i % 5 == 0)  result.add("Buzz");
+        else                  result.add(String.valueOf(i));
+    }
+    return result;
+}
+
+// Output for n=15:
+// [1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz,
+//  11, Fizz, 13, 14, FizzBuzz]</code></pre><h4>Java 8 Streams Version</h4><pre><code>public static List&lt;String&gt; fizzBuzzStream(int n) {
+    return IntStream.rangeClosed(1, n)
+        .mapToObj(i -> i % 15 == 0 ? "FizzBuzz"
+                     : i % 3 == 0  ? "Fizz"
+                     : i % 5 == 0  ? "Buzz"
+                     : String.valueOf(i))
+        .collect(Collectors.toList());
+}</code></pre><h4>Extensible Version (Interview Bonus)</h4><pre><code>// Easy to add new rules without changing existing code
+public static String fizzBuzzExtensible(int i) {
+    StringBuilder sb = new StringBuilder();
+    if (i % 3 == 0) sb.append("Fizz");
+    if (i % 5 == 0) sb.append("Buzz");
+    if (i % 7 == 0) sb.append("Bazz"); // new rule!
+    return sb.length() == 0 ? String.valueOf(i) : sb.toString();
+}</code></pre><p><strong>Interview tip:</strong> Start with the simple version. If they ask "What if we add more rules?", show the extensible version — it demonstrates <strong>Open/Closed Principle</strong>.</p>`},
+{id:727,part:"S",level:"Senior",category:"Coding",q:"✅ Fibonacci Series — Iterative, Recursive, and Memoized approaches",a:`<h4>Approach 1: Iterative (Optimal)</h4><pre><code>public static List&lt;Integer&gt; fibonacci(int n) {
+    List&lt;Integer&gt; fib = new ArrayList&lt;&gt;();
+    int a = 0, b = 1;
+    for (int i = 0; i < n; i++) {
+        fib.add(a);
+        int temp = a + b;
+        a = b;
+        b = temp;
+    }
+    return fib;
+}
+
+// fibonacci(10) → [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]</code></pre><h4>Approach 2: Recursive (Slow — O(2^n))</h4><pre><code>public static int fibRecursive(int n) {
+    if (n <= 1) return n;
+    return fibRecursive(n - 1) + fibRecursive(n - 2);
+}
+// fibRecursive(10) → 55
+// ⚠️ Very slow for large n (exponential time)</code></pre><h4>Approach 3: Memoized (Dynamic Programming)</h4><pre><code>public static int fibMemo(int n, Map&lt;Integer, Integer&gt; memo) {
+    if (n <= 1) return n;
+    if (memo.containsKey(n)) return memo.get(n);
+    int result = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);
+    memo.put(n, result);
+    return result;
+}
+
+// Usage
+int result = fibMemo(50, new HashMap&lt;&gt;());
+// Fast even for n=50!</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th></tr><tr><td>Iterative</td><td>O(n)</td><td>O(1)</td></tr><tr><td>Recursive</td><td>O(2^n)</td><td>O(n) stack</td></tr><tr><td>Memoized</td><td>O(n)</td><td>O(n)</td></tr></table>`},
+{id:728,part:"S",level:"Senior",category:"Coding",q:"✅ Anagram Check — Are two strings anagrams of each other?",a:`<h4>Approach 1: Sorting (Simple)</h4><pre><code>public static boolean isAnagram(String s1, String s2) {
+    if (s1.length() != s2.length()) return false;
+    char[] a = s1.toLowerCase().toCharArray();
+    char[] b = s2.toLowerCase().toCharArray();
+    Arrays.sort(a);
+    Arrays.sort(b);
+    return Arrays.equals(a, b);
+}
+
+// Examples
+isAnagram("listen", "silent");  // true
+isAnagram("hello", "world");    // false
+isAnagram("Triangle", "Integral"); // true</code></pre><h4>Approach 2: Frequency Map (Optimal — O(n))</h4><pre><code>public static boolean isAnagramOptimal(String s1, String s2) {
+    if (s1.length() != s2.length()) return false;
+    int[] freq = new int[26];
+    for (char c : s1.toLowerCase().toCharArray()) freq[c - 'a']++;
+    for (char c : s2.toLowerCase().toCharArray()) freq[c - 'a']--;
+    for (int count : freq) {
+        if (count != 0) return false;
+    }
+    return true;
+}</code></pre><h4>Approach 3: Group Anagrams (Bonus)</h4><pre><code>public static Map&lt;String, List&lt;String&gt;&gt; groupAnagrams(String[] words) {
+    return Arrays.stream(words)
+        .collect(Collectors.groupingBy(w -> {
+            char[] chars = w.toLowerCase().toCharArray();
+            Arrays.sort(chars);
+            return new String(chars);
+        }));
+}
+
+// ["eat","tea","tan","ate","nat","bat"]
+// → {aet=[eat,tea,ate], ant=[tan,nat], abt=[bat]}</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th></tr><tr><td>Sorting</td><td>O(n log n)</td><td>O(n)</td></tr><tr><td>Frequency</td><td>O(n)</td><td>O(1)</td></tr></table>`},
+{id:729,part:"S",level:"Senior",category:"Coding",q:"✅ Check if a Number is Prime — Multiple approaches with optimization",a:`<h4>Approach 1: Optimized Trial Division</h4><pre><code>public static boolean isPrime(int n) {
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
+    // Only check up to √n, skip even numbers
+    for (int i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0)
+            return false;
+    }
+    return true;
+}
+
+// isPrime(17) → true
+// isPrime(25) → false
+// isPrime(97) → true</code></pre><h4>Find All Primes up to N (Sieve of Eratosthenes)</h4><pre><code>public static List&lt;Integer&gt; sieveOfEratosthenes(int n) {
+    boolean[] isComposite = new boolean[n + 1];
+    List&lt;Integer&gt; primes = new ArrayList&lt;&gt;();
+    for (int i = 2; i <= n; i++) {
+        if (!isComposite[i]) {
+            primes.add(i);
+            for (long j = (long) i * i; j <= n; j += i) {
+                isComposite[(int) j] = true;
+            }
+        }
+    }
+    return primes;
+}
+
+// sieveOfEratosthenes(30)
+// → [2,3,5,7,11,13,17,19,23,29]</code></pre><table><tr><th>Method</th><th>Time</th><th>Use Case</th></tr><tr><td>Trial Division</td><td>O(√n)</td><td>Check single number</td></tr><tr><td>Sieve</td><td>O(n log log n)</td><td>Find all primes up to N</td></tr></table>`},
+{id:730,part:"S",level:"Senior",category:"Coding",q:"✅ Find Second Largest Element in an Array — Without sorting",a:`<h4>Approach 1: Single Pass (Optimal)</h4><pre><code>public static int secondLargest(int[] arr) {
+    if (arr.length < 2)
+        throw new IllegalArgumentException("Need at least 2 elements");
+    
+    int first = Integer.MIN_VALUE;
+    int second = Integer.MIN_VALUE;
+    
+    for (int num : arr) {
+        if (num > first) {
+            second = first;
+            first = num;
+        } else if (num > second && num != first) {
+            second = num;
+        }
+    }
+    
+    if (second == Integer.MIN_VALUE)
+        throw new RuntimeException("No second largest (all same)");
+    return second;
+}
+
+// secondLargest({3, 1, 5, 2, 4}) → 4
+// secondLargest({10, 10, 10}) → Exception</code></pre><h4>Approach 2: TreeSet (Handles Duplicates)</h4><pre><code>public static int secondLargestSet(int[] arr) {
+    TreeSet&lt;Integer&gt; set = new TreeSet&lt;&gt;();
+    for (int num : arr) set.add(num);
+    set.pollLast(); // remove largest
+    return set.last(); // second largest
+}</code></pre><h4>Approach 3: Streams</h4><pre><code>public static int secondLargestStream(int[] arr) {
+    return Arrays.stream(arr)
+        .distinct()
+        .boxed()
+        .sorted(Comparator.reverseOrder())
+        .skip(1)
+        .findFirst()
+        .orElseThrow();
+}</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th></tr><tr><td>Single Pass</td><td>O(n)</td><td>O(1)</td></tr><tr><td>TreeSet</td><td>O(n log n)</td><td>O(n)</td></tr><tr><td>Streams</td><td>O(n log n)</td><td>O(n)</td></tr></table>`},
+{id:731,part:"S",level:"Senior",category:"Coding",q:"✅ Factorial — Iterative, Recursive, and BigInteger for large numbers",a:`<h4>Approach 1: Iterative</h4><pre><code>public static long factorial(int n) {
+    if (n < 0) throw new IllegalArgumentException("Negative!");
+    long result = 1;
+    for (int i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+// factorial(5) → 120  (5×4×3×2×1)
+// factorial(10) → 3628800
+// ⚠️ Overflows for n > 20 with long</code></pre><h4>Approach 2: Recursive</h4><pre><code>public static long factorialRecursive(int n) {
+    if (n <= 1) return 1;
+    return n * factorialRecursive(n - 1);
+}</code></pre><h4>Approach 3: BigInteger (No Overflow)</h4><pre><code>import java.math.BigInteger;
+
+public static BigInteger factorialBig(int n) {
+    BigInteger result = BigInteger.ONE;
+    for (int i = 2; i <= n; i++) {
+        result = result.multiply(BigInteger.valueOf(i));
+    }
+    return result;
+}
+
+// factorialBig(50) → 30414093201713378043612608...
+// factorialBig(100) → works perfectly!</code></pre><h4>Approach 4: Streams</h4><pre><code>public static long factorialStream(int n) {
+    return LongStream.rangeClosed(1, n)
+        .reduce(1, (a, b) -> a * b);
+}</code></pre><p><strong>Interview tip:</strong> Always mention the overflow issue with <code>long</code> and show you know <code>BigInteger</code> for production code.</p>`},
+{id:732,part:"S",level:"Senior",category:"Coding",q:"✅ Binary Search — Iterative and Recursive implementations",a:`<h4>Approach 1: Iterative (Recommended)</h4><pre><code>public static int binarySearch(int[] arr, int target) {
+    int left = 0, right = arr.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2; // avoid overflow
+        if (arr[mid] == target) return mid;
+        else if (arr[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1; // not found
+}
+
+// int[] arr = {1, 3, 5, 7, 9, 11, 13};
+// binarySearch(arr, 7) → 3 (index)
+// binarySearch(arr, 6) → -1 (not found)</code></pre><h4>Approach 2: Recursive</h4><pre><code>public static int binarySearchRecursive(int[] arr, int target,
+                                         int left, int right) {
+    if (left > right) return -1;
+    int mid = left + (right - left) / 2;
+    if (arr[mid] == target) return mid;
+    if (arr[mid] < target)
+        return binarySearchRecursive(arr, target, mid + 1, right);
+    return binarySearchRecursive(arr, target, left, mid - 1);
+}</code></pre><h4>Using Collections.binarySearch()</h4><pre><code>List&lt;Integer&gt; list = List.of(1, 3, 5, 7, 9, 11);
+int index = Collections.binarySearch(list, 7);
+// index = 3
+
+// For arrays
+int idx = Arrays.binarySearch(new int[]{1,3,5,7,9}, 5);
+// idx = 2</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th><th>Note</th></tr><tr><td>Iterative</td><td>O(log n)</td><td>O(1)</td><td>Best for interviews</td></tr><tr><td>Recursive</td><td>O(log n)</td><td>O(log n) stack</td><td>Elegant but uses stack</td></tr><tr><td>Built-in</td><td>O(log n)</td><td>O(1)</td><td>Use in production</td></tr></table><p><strong>Key:</strong> <code>mid = left + (right - left) / 2</code> avoids integer overflow vs <code>(left + right) / 2</code></p>`},
+{id:733,part:"S",level:"Senior",category:"Coding",q:"✅ String Compression — Compress \"aabcccaaa\" to \"a2b1c3a3\"",a:`<h4>Run-Length Encoding</h4><pre><code>public static String compress(String str) {
+    if (str == null || str.isEmpty()) return str;
+    
+    StringBuilder sb = new StringBuilder();
+    int count = 1;
+    
+    for (int i = 1; i <= str.length(); i++) {
+        if (i < str.length() &&
+            str.charAt(i) == str.charAt(i - 1)) {
+            count++;
+        } else {
+            sb.append(str.charAt(i - 1));
+            sb.append(count);
+            count = 1;
+        }
+    }
+    
+    // Return compressed only if shorter
+    return sb.length() < str.length()
+        ? sb.toString() : str;
+}
+
+// compress("aabcccaaa")  → "a2b1c3a3"
+// compress("aabbcc")     → "aabbcc" (not shorter)
+// compress("aaaaaaa")    → "a7"</code></pre><h4>Decompress (Bonus)</h4><pre><code>public static String decompress(String compressed) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < compressed.length(); i += 2) {
+        char ch = compressed.charAt(i);
+        int count = Character.getNumericValue(
+            compressed.charAt(i + 1));
+        sb.append(String.valueOf(ch).repeat(count));
+    }
+    return sb.toString();
+}
+
+// decompress("a2b1c3a3") → "aabcccaaa"</code></pre><p><strong>SDET use case:</strong> Compressing large test log files, encoding test result summaries, comparing before/after states.</p>`},
+{id:734,part:"S",level:"Senior",category:"Coding",q:"✅ Find Intersection of Two Arrays — Common elements between arrays",a:`<h4>Approach 1: HashSet (Optimal)</h4><pre><code>public static int[] intersection(int[] a, int[] b) {
+    Set&lt;Integer&gt; setA = new HashSet&lt;&gt;();
+    for (int num : a) setA.add(num);
+    
+    Set&lt;Integer&gt; result = new LinkedHashSet&lt;&gt;();
+    for (int num : b) {
+        if (setA.contains(num)) result.add(num);
+    }
+    return result.stream().mapToInt(i -> i).toArray();
+}
+
+// intersection({1,2,2,3,4}, {2,3,5}) → [2, 3]</code></pre><h4>Approach 2: With Duplicates (intersect with count)</h4><pre><code>public static int[] intersectionWithDups(int[] a, int[] b) {
+    Map&lt;Integer, Integer&gt; freq = new HashMap&lt;&gt;();
+    for (int num : a) freq.merge(num, 1, Integer::sum);
+    
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    for (int num : b) {
+        if (freq.getOrDefault(num, 0) > 0) {
+            result.add(num);
+            freq.merge(num, -1, Integer::sum);
+        }
+    }
+    return result.stream().mapToInt(i -> i).toArray();
+}
+
+// intersectionWithDups({1,2,2,3}, {2,2,4}) → [2, 2]</code></pre><h4>Approach 3: Streams</h4><pre><code>Set&lt;Integer&gt; setB = Arrays.stream(b).boxed()
+    .collect(Collectors.toSet());
+int[] common = Arrays.stream(a)
+    .filter(setB::contains)
+    .distinct()
+    .toArray();</code></pre><table><tr><th>Approach</th><th>Time</th><th>Unique Only?</th></tr><tr><td>HashSet</td><td>O(m+n)</td><td>Yes</td></tr><tr><td>With Duplicates</td><td>O(m+n)</td><td>No (preserves count)</td></tr><tr><td>Streams</td><td>O(m+n)</td><td>Configurable</td></tr></table>`},
+{id:735,part:"S",level:"Senior",category:"Coding",q:"✅ Reverse Words in a String — \"Hello World Java\" → \"Java World Hello\"",a:`<h4>Approach 1: Split + Reverse (Simple)</h4><pre><code>public static String reverseWords(String str) {
+    String[] words = str.trim().split("\\\\s+");
+    Collections.reverse(Arrays.asList(words));
+    return String.join(" ", words);
+}
+
+// reverseWords("Hello World Java") → "Java World Hello"
+// reverseWords("  the  sky is blue  ") → "blue is sky the"</code></pre><h4>Approach 2: StringBuilder (Manual)</h4><pre><code>public static String reverseWordsManual(String str) {
+    String[] words = str.trim().split("\\\\s+");
+    StringBuilder sb = new StringBuilder();
+    for (int i = words.length - 1; i >= 0; i--) {
+        sb.append(words[i]);
+        if (i > 0) sb.append(" ");
+    }
+    return sb.toString();
+}</code></pre><h4>Approach 3: Streams (Java 8)</h4><pre><code>public static String reverseWordsStream(String str) {
+    List&lt;String&gt; words = Arrays.asList(str.trim().split("\\\\s+"));
+    Collections.reverse(words);
+    return words.stream().collect(Collectors.joining(" "));
+}</code></pre><h4>Related: Reverse Each Word (Keep Order)</h4><pre><code>// "Hello World" → "olleH dlroW"
+public static String reverseEachWord(String str) {
+    return Arrays.stream(str.split(" "))
+        .map(w -> new StringBuilder(w).reverse().toString())
+        .collect(Collectors.joining(" "));
+}</code></pre>`},
+{id:736,part:"S",level:"Senior",category:"Coding",q:"✅ Swap Two Numbers Without Temp Variable — Three different approaches",a:`<h4>Approach 1: Arithmetic (Addition/Subtraction)</h4><pre><code>int a = 10, b = 20;
+a = a + b;  // a = 30
+b = a - b;  // b = 10
+a = a - b;  // a = 20
+
+System.out.println("a=" + a + " b=" + b);
+// Output: a=20 b=10
+// ⚠️ Risk: Integer overflow for large numbers</code></pre><h4>Approach 2: XOR (Bitwise — No Overflow)</h4><pre><code>int a = 10, b = 20;
+a = a ^ b;  // a = 30 (XOR)
+b = a ^ b;  // b = 10 (original a)
+a = a ^ b;  // a = 20 (original b)
+
+// Works because: x ^ x = 0 and x ^ 0 = x
+// No overflow risk!</code></pre><h4>Approach 3: Multiplication/Division</h4><pre><code>int a = 10, b = 20;
+a = a * b;  // a = 200
+b = a / b;  // b = 10
+a = a / b;  // a = 20
+// ⚠️ Fails if b = 0</code></pre><h4>Real World: Just Use Temp! (or Arrays.swap)</h4><pre><code>// In production code, readability > cleverness
+int temp = a;
+a = b;
+b = temp;
+
+// For collections
+Collections.swap(list, i, j);</code></pre><p><strong>Interview tip:</strong> Show the XOR approach to impress, but mention that in real production code you'd use a temp variable for readability.</p>`},
+{id:737,part:"S",level:"Senior",category:"Design Pattern",q:"✅ Singleton Pattern — Thread-safe implementations in Java",a:`<h4>Approach 1: Bill Pugh Singleton (Best)</h4><pre><code>public class WebDriverManager {
+    private WebDriverManager() {
+        // Private constructor
+    }
+    
+    private static class Holder {
+        private static final WebDriverManager INSTANCE =
+            new WebDriverManager();
+    }
+    
+    public static WebDriverManager getInstance() {
+        return Holder.INSTANCE;
+    }
+}
+
+// Usage in test framework
+WebDriverManager manager = WebDriverManager.getInstance();</code></pre><h4>Approach 2: Enum Singleton (Simplest)</h4><pre><code>public enum ConfigManager {
+    INSTANCE;
+    
+    private Properties props;
+    
+    ConfigManager() {
+        props = new Properties();
+        try {
+            props.load(new FileInputStream("config.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public String get(String key) {
+        return props.getProperty(key);
+    }
+}
+
+// Usage
+String url = ConfigManager.INSTANCE.get("baseUrl");</code></pre><h4>Approach 3: Double-Checked Locking</h4><pre><code>public class BrowserFactory {
+    private static volatile BrowserFactory instance;
+    
+    public static BrowserFactory getInstance() {
+        if (instance == null) {
+            synchronized (BrowserFactory.class) {
+                if (instance == null) {
+                    instance = new BrowserFactory();
+                }
+            }
+        }
+        return instance;
+    }
+}</code></pre><table><tr><th>Approach</th><th>Thread-Safe</th><th>Lazy</th><th>Best For</th></tr><tr><td>Bill Pugh</td><td>Yes</td><td>Yes</td><td>General purpose</td></tr><tr><td>Enum</td><td>Yes</td><td>No</td><td>Config managers</td></tr><tr><td>Double-Check</td><td>Yes</td><td>Yes</td><td>Legacy codebases</td></tr></table>`},
+{id:738,part:"S",level:"Senior",category:"Coding",q:"✅ Sort Custom Objects — Comparable vs Comparator in Java",a:`<h4>Using Comparable (Natural Ordering)</h4><pre><code>public class TestCase implements Comparable&lt;TestCase&gt; {
+    String id;
+    String name;
+    int priority; // 1=Critical, 2=High, 3=Medium
+    
+    @Override
+    public int compareTo(TestCase other) {
+        return Integer.compare(this.priority, other.priority);
+    }
+}
+
+// Usage
+List&lt;TestCase&gt; tests = new ArrayList&lt;&gt;();
+tests.add(new TestCase("TC-3", "Login", 3));
+tests.add(new TestCase("TC-1", "Payment", 1));
+tests.add(new TestCase("TC-2", "Search", 2));
+Collections.sort(tests);
+// Sorted by priority: Payment(1), Search(2), Login(3)</code></pre><h4>Using Comparator (Custom Ordering)</h4><pre><code>// Sort by name alphabetically
+tests.sort(Comparator.comparing(tc -> tc.name));
+
+// Sort by priority, then by name
+tests.sort(Comparator.comparingInt((TestCase tc) -> tc.priority)
+                      .thenComparing(tc -> tc.name));
+
+// Sort in reverse order
+tests.sort(Comparator.comparingInt((TestCase tc) -> tc.priority)
+                      .reversed());</code></pre><h4>Lambda Comparators</h4><pre><code>// Sort test results by execution time
+results.sort((a, b) -> Long.compare(a.duration, b.duration));
+
+// Sort by status: FAIL first, then PASS
+results.sort(Comparator.comparing(r -> r.status.equals("FAIL") ? 0 : 1));</code></pre><table><tr><th></th><th>Comparable</th><th>Comparator</th></tr><tr><td>Where</td><td>Inside the class</td><td>Outside the class</td></tr><tr><td>Method</td><td>compareTo()</td><td>compare()</td></tr><tr><td>Orderings</td><td>One (natural)</td><td>Multiple (flexible)</td></tr><tr><td>Use</td><td>Default sort</td><td>Custom / alternate sorts</td></tr></table>`},
+{id:739,part:"S",level:"Senior",category:"Concepts",q:"✅ How HashMap Works Internally — Hash function, buckets, collisions",a:`<h4>HashMap Internal Working</h4><pre><code>HashMap&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+map.put("apple", 5);
+
+// Step 1: Calculate hash
+int hash = "apple".hashCode(); // 93029210
+
+// Step 2: Find bucket index
+int index = hash & (capacity - 1); // e.g., index = 6
+
+// Step 3: Store in bucket
+// Bucket 6: ["apple" → 5]
+
+// Step 4: Collision handling (same bucket)
+map.put("banana", 3); // hash → same bucket 6
+// Bucket 6: ["apple"→5] → ["banana"→3] (linked list)
+
+// Java 8+: If bucket has 8+ entries,
+// linked list → Red-Black Tree (O(log n))</code></pre><h4>Visual Representation</h4><pre><code>Buckets (array of 16):
+[0] → null
+[1] → null
+[2] → ["cat"→2]
+[3] → null
+[4] → ["dog"→5] → ["fog"→1]  ← collision
+[5] → null
+...
+[15] → ["zen"→9]</code></pre><h4>Key Concepts for Interviews</h4><table><tr><th>Concept</th><th>Detail</th></tr><tr><td>Default capacity</td><td>16 buckets</td></tr><tr><td>Load factor</td><td>0.75 (resize at 75% full)</td></tr><tr><td>Resize</td><td>Double capacity (16→32→64)</td></tr><tr><td>Collision (Java 7)</td><td>Linked list in bucket</td></tr><tr><td>Collision (Java 8+)</td><td>Linked list → Tree at 8 entries</td></tr><tr><td>Time: get/put</td><td>O(1) average, O(log n) worst</td></tr><tr><td>Null key</td><td>Allowed (stored in bucket 0)</td></tr><tr><td>Thread safety</td><td>Not thread-safe (use ConcurrentHashMap)</td></tr></table><p><strong>Follow-up:</strong> Why override both <code>hashCode()</code> and <code>equals()</code>? If two objects are equal, they MUST have the same hashCode. Otherwise HashMap can't find the key.</p>`},
+{id:740,part:"S",level:"Senior",category:"Coding",q:"✅ Longest Substring Without Repeating Characters — Sliding Window technique",a:`<h4>Sliding Window Solution</h4><pre><code>public static int longestUniqueSubstring(String s) {
+    Map&lt;Character, Integer&gt; lastSeen = new HashMap&lt;&gt;();
+    int maxLen = 0, start = 0;
+    
+    for (int end = 0; end < s.length(); end++) {
+        char ch = s.charAt(end);
+        if (lastSeen.containsKey(ch) &&
+            lastSeen.get(ch) >= start) {
+            start = lastSeen.get(ch) + 1;
+        }
+        lastSeen.put(ch, end);
+        maxLen = Math.max(maxLen, end - start + 1);
+    }
+    return maxLen;
+}
+
+// "abcabcbb" → 3 ("abc")
+// "bbbbb"    → 1 ("b")
+// "pwwkew"   → 3 ("wke")
+// ""         → 0</code></pre><h4>Return the Substring Itself</h4><pre><code>public static String longestUniqueSubstringStr(String s) {
+    Map&lt;Character, Integer&gt; lastSeen = new HashMap&lt;&gt;();
+    int maxLen = 0, start = 0, maxStart = 0;
+    
+    for (int end = 0; end < s.length(); end++) {
+        char ch = s.charAt(end);
+        if (lastSeen.containsKey(ch) &&
+            lastSeen.get(ch) >= start) {
+            start = lastSeen.get(ch) + 1;
+        }
+        lastSeen.put(ch, end);
+        if (end - start + 1 > maxLen) {
+            maxLen = end - start + 1;
+            maxStart = start;
+        }
+    }
+    return s.substring(maxStart, maxStart + maxLen);
+}
+
+// "abcabcbb" → "abc"</code></pre><p><strong>Pattern:</strong> This is the classic <strong>Sliding Window</strong> pattern. Used in many string/array problems: minimum window substring, max sum subarray, etc.</p><table><tr><th>Complexity</th><th>Value</th></tr><tr><td>Time</td><td>O(n) — single pass</td></tr><tr><td>Space</td><td>O(min(n, 26)) — alphabet size</td></tr></table>`}
+);
+
 // ============================================================
 // RENDER ENGINE
 // ============================================================
