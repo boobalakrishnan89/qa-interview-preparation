@@ -226,6 +226,7 @@
         .section-header.part-p { border-left: 4px solid #ff922b; }
         .section-header.part-q { border-left: 4px solid #cc5de8; }
         .section-header.part-r { border-left: 4px solid #20c997; }
+        .section-header.part-s { border-left: 4px solid #f06595; }
         .section-icon { font-size: 28px; }
         .section-title { font-size: 18px; font-weight: 700; }
         .section-desc { font-size: 13px; color: var(--text-secondary); }
@@ -269,6 +270,7 @@
         .qa-card.part-p .qa-number { background: rgba(255,146,43,.1); color: #ff922b; }
         .qa-card.part-q .qa-number { background: rgba(204,93,232,.1); color: #cc5de8; }
         .qa-card.part-r .qa-number { background: rgba(32,201,151,.1); color: #20c997; }
+        .qa-card.part-s .qa-number { background: rgba(240,101,149,.1); color: #f06595; }
 
         .qa-question { flex: 1; font-weight: 600; font-size: 15px; line-height: 1.5; }
         .qa-category {
@@ -2164,6 +2166,434 @@ questions.push(
 {id:714,part:"R",level:"Mid",category:"Web",q:"How do you test web application navigation and links?",a:`<h4>Navigation Testing</h4><table><tr><th>Test</th><th>How</th><th>Expected</th></tr><tr><td>All nav links</td><td>Click each menu item</td><td>Correct page loads</td></tr><tr><td>Breadcrumbs</td><td>Navigate deep, click breadcrumb</td><td>Returns to correct level</td></tr><tr><td>Back button</td><td>Navigate forward, click back</td><td>Previous page loads</td></tr><tr><td>Broken links</td><td>Use link checker tool</td><td>No 404 errors</td></tr><tr><td>External links</td><td>Click outbound links</td><td>Open in new tab</td></tr><tr><td>Footer links</td><td>Click all footer links</td><td>Correct pages load</td></tr><tr><td>Logo click</td><td>Click site logo</td><td>Returns to homepage</td></tr><tr><td>Deep linking</td><td>Paste URL directly</td><td>Page loads correctly</td></tr></table><h4>Automated Link Check</h4><pre><code># Find broken links\nnpx broken-link-checker https://onsurity.com\n# Reports all 404s and broken links</code></pre>`}
 );
 
+// ──────────── PART S — FAQ JAVA CODING QUESTIONS ────────────
+questions.push(
+{id:715,part:"S",level:"Senior",category:"Coding",q:"✅ Reverse a String in Java — Write a method and explain approaches",a:`<h4>Approach 1: StringBuilder (Recommended)</h4><pre><code>public static String reverseString(String str) {
+    return new StringBuilder(str).reverse().toString();
+}
+
+// Example
+System.out.println(reverseString("Playwright"));
+// Output: "thgirwyalP"</code></pre><h4>Approach 2: Character Array (Manual)</h4><pre><code>public static String reverseManual(String str) {
+    char[] chars = str.toCharArray();
+    int left = 0, right = chars.length - 1;
+    while (left < right) {
+        char temp = chars[left];
+        chars[left] = chars[right];
+        chars[right] = temp;
+        left++;
+        right--;
+    }
+    return new String(chars);
+}</code></pre><h4>Approach 3: Recursive</h4><pre><code>public static String reverseRecursive(String str) {
+    if (str.isEmpty()) return str;
+    return reverseRecursive(str.substring(1)) + str.charAt(0);
+}</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th><th>Best For</th></tr><tr><td>StringBuilder</td><td>O(n)</td><td>O(n)</td><td>Production code, interviews</td></tr><tr><td>Char Array</td><td>O(n)</td><td>O(n)</td><td>In-place swap understanding</td></tr><tr><td>Recursive</td><td>O(n²)</td><td>O(n)</td><td>Demonstrating recursion</td></tr></table>`},
+{id:716,part:"S",level:"Senior",category:"Coding",q:"✅ Find Duplicate Elements in an Array — Multiple Java approaches",a:`<h4>Approach 1: Using HashSet (Optimal)</h4><pre><code>public static List&lt;Integer&gt; findDuplicates(int[] arr) {
+    Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+    Set&lt;Integer&gt; duplicates = new LinkedHashSet&lt;&gt;();
+    for (int num : arr) {
+        if (!seen.add(num)) {
+            duplicates.add(num);
+        }
+    }
+    return new ArrayList&lt;&gt;(duplicates);
+}
+
+// Example
+int[] arr = {1, 2, 3, 2, 4, 3, 5};
+System.out.println(findDuplicates(arr));
+// Output: [2, 3]</code></pre><h4>Approach 2: Using Streams (Java 8+)</h4><pre><code>public static List&lt;Integer&gt; findDuplicatesStream(int[] arr) {
+    return Arrays.stream(arr)
+        .boxed()
+        .collect(Collectors.groupingBy(Function.identity(),
+                 Collectors.counting()))
+        .entrySet().stream()
+        .filter(e -> e.getValue() > 1)
+        .map(Map.Entry::getKey)
+        .collect(Collectors.toList());
+}</code></pre><h4>Approach 3: Frequency Map</h4><pre><code>public static List&lt;Integer&gt; findDuplicatesMap(int[] arr) {
+    Map&lt;Integer, Integer&gt; freq = new LinkedHashMap&lt;&gt;();
+    for (int num : arr) {
+        freq.put(num, freq.getOrDefault(num, 0) + 1);
+    }
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    freq.forEach((k, v) -> { if (v > 1) result.add(k); });
+    return result;
+}</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th></tr><tr><td>HashSet</td><td>O(n)</td><td>O(n)</td></tr><tr><td>Streams</td><td>O(n)</td><td>O(n)</td></tr><tr><td>Frequency Map</td><td>O(n)</td><td>O(n)</td></tr></table>`},
+{id:717,part:"S",level:"Senior",category:"Coding",q:"✅ Palindrome Check — Verify if a string is a palindrome (ignoring case/special chars)",a:`<h4>Approach 1: Two Pointer (Optimal)</h4><pre><code>public static boolean isPalindrome(String str) {
+    String clean = str.replaceAll("[^a-zA-Z0-9]", "")
+                      .toLowerCase();
+    int left = 0, right = clean.length() - 1;
+    while (left < right) {
+        if (clean.charAt(left) != clean.charAt(right)) {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
+
+// Examples
+isPalindrome("A man, a plan, a canal: Panama"); // true
+isPalindrome("racecar");                        // true
+isPalindrome("hello");                          // false</code></pre><h4>Approach 2: StringBuilder Reverse</h4><pre><code>public static boolean isPalindromeSimple(String str) {
+    String clean = str.replaceAll("[^a-zA-Z0-9]", "")
+                      .toLowerCase();
+    return clean.equals(
+        new StringBuilder(clean).reverse().toString());
+}</code></pre><h4>Approach 3: Recursive</h4><pre><code>public static boolean isPalindromeRecursive(String s, int l, int r) {
+    if (l >= r) return true;
+    if (s.charAt(l) != s.charAt(r)) return false;
+    return isPalindromeRecursive(s, l + 1, r - 1);
+}</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th><th>Best For</th></tr><tr><td>Two Pointer</td><td>O(n)</td><td>O(1)</td><td>Best performance</td></tr><tr><td>StringBuilder</td><td>O(n)</td><td>O(n)</td><td>Cleanest code</td></tr><tr><td>Recursive</td><td>O(n)</td><td>O(n) stack</td><td>Recursion demo</td></tr></table>`},
+{id:718,part:"S",level:"Senior",category:"Coding",q:"✅ Character Frequency — Count occurrences of each character in a string",a:`<h4>Approach 1: LinkedHashMap (Preserves Order)</h4><pre><code>public static Map&lt;Character, Integer&gt; charFrequency(String str) {
+    Map&lt;Character, Integer&gt; freq = new LinkedHashMap&lt;&gt;();
+    for (char ch : str.toCharArray()) {
+        freq.put(ch, freq.getOrDefault(ch, 0) + 1);
+    }
+    return freq;
+}
+
+// Example
+System.out.println(charFrequency("hello"));
+// Output: {h=1, e=1, l=2, o=1}</code></pre><h4>Approach 2: Java 8 Streams</h4><pre><code>public static Map&lt;Character, Long&gt; charFreqStream(String str) {
+    return str.chars()
+        .mapToObj(c -> (char) c)
+        .collect(Collectors.groupingBy(
+            Function.identity(),
+            LinkedHashMap::new,
+            Collectors.counting()));
+}</code></pre><h4>Approach 3: Find First Non-Repeating Character</h4><pre><code>public static Character firstNonRepeating(String str) {
+    Map&lt;Character, Integer&gt; freq = charFrequency(str);
+    for (Map.Entry&lt;Character, Integer&gt; entry : freq.entrySet()) {
+        if (entry.getValue() == 1) return entry.getKey();
+    }
+    return null;
+}
+
+// "aabbcde" → 'c' (first char with count 1)</code></pre><p><strong>Interview tip:</strong> Always use <code>LinkedHashMap</code> to preserve insertion order. Regular <code>HashMap</code> doesn't guarantee order.</p>`},
+{id:719,part:"S",level:"Senior",category:"Coding",q:"✅ Two Sum — Find two numbers that add up to a target value",a:`<h4>Approach 1: HashMap (Optimal — O(n))</h4><pre><code>public static int[] twoSum(int[] nums, int target) {
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+        if (map.containsKey(complement)) {
+            return new int[]{map.get(complement), i};
+        }
+        map.put(nums[i], i);
+    }
+    return new int[]{}; // no solution
+}
+
+// Example
+int[] nums = {2, 7, 11, 15};
+int[] result = twoSum(nums, 9);
+System.out.println(Arrays.toString(result));
+// Output: [0, 1]  (because nums[0] + nums[1] = 2 + 7 = 9)</code></pre><h4>Approach 2: Brute Force — O(n²)</h4><pre><code>public static int[] twoSumBrute(int[] nums, int target) {
+    for (int i = 0; i < nums.length; i++) {
+        for (int j = i + 1; j < nums.length; j++) {
+            if (nums[i] + nums[j] == target) {
+                return new int[]{i, j};
+            }
+        }
+    }
+    return new int[]{};
+}</code></pre><h4>Approach 3: Sorted Array + Two Pointers</h4><pre><code>public static int[] twoSumSorted(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left < right) {
+        int sum = nums[left] + nums[right];
+        if (sum == target) return new int[]{left, right};
+        else if (sum < target) left++;
+        else right--;
+    }
+    return new int[]{};
+}
+// Only works on SORTED arrays</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th><th>Requirement</th></tr><tr><td>HashMap</td><td>O(n)</td><td>O(n)</td><td>Unsorted array</td></tr><tr><td>Brute Force</td><td>O(n²)</td><td>O(1)</td><td>Any array</td></tr><tr><td>Two Pointers</td><td>O(n)</td><td>O(1)</td><td>Sorted array only</td></tr></table>`},
+{id:720,part:"S",level:"Senior",category:"Coding",q:"✅ Remove Duplicates from a Sorted Array — In-place removal",a:`<h4>Approach 1: Two Pointer (In-Place — Optimal)</h4><pre><code>public static int removeDuplicates(int[] nums) {
+    if (nums.length == 0) return 0;
+    int i = 0;
+    for (int j = 1; j < nums.length; j++) {
+        if (nums[j] != nums[i]) {
+            i++;
+            nums[i] = nums[j];
+        }
+    }
+    return i + 1; // new length
+}
+
+// Example
+int[] arr = {1, 1, 2, 2, 3};
+int newLen = removeDuplicates(arr);
+// newLen = 3, arr = [1, 2, 3, ...]
+System.out.println(Arrays.toString(
+    Arrays.copyOf(arr, newLen)));
+// Output: [1, 2, 3]</code></pre><h4>Approach 2: Using LinkedHashSet (New Array)</h4><pre><code>public static int[] removeDuplicatesSet(int[] arr) {
+    Set&lt;Integer&gt; set = new LinkedHashSet&lt;&gt;();
+    for (int num : arr) set.add(num);
+    return set.stream().mapToInt(Integer::intValue).toArray();
+}
+
+// Works for UNSORTED arrays too
+int[] arr = {3, 1, 2, 3, 1, 4};
+System.out.println(Arrays.toString(
+    removeDuplicatesSet(arr)));
+// Output: [3, 1, 2, 4]</code></pre><h4>Approach 3: Java 8 Streams</h4><pre><code>int[] unique = Arrays.stream(arr)
+    .distinct()
+    .toArray();</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th><th>Array Must Be</th></tr><tr><td>Two Pointer</td><td>O(n)</td><td>O(1)</td><td>Sorted</td></tr><tr><td>LinkedHashSet</td><td>O(n)</td><td>O(n)</td><td>Any</td></tr><tr><td>Streams</td><td>O(n)</td><td>O(n)</td><td>Any</td></tr></table>`},
+{id:721,part:"S",level:"Senior",category:"Coding",q:"✅ Merge Two Sorted Arrays — Combine into one sorted array",a:`<h4>Approach 1: Two Pointer Merge (Optimal)</h4><pre><code>public static int[] mergeSorted(int[] a, int[] b) {
+    int[] merged = new int[a.length + b.length];
+    int i = 0, j = 0, k = 0;
+    
+    while (i < a.length && j < b.length) {
+        if (a[i] <= b[j]) {
+            merged[k++] = a[i++];
+        } else {
+            merged[k++] = b[j++];
+        }
+    }
+    
+    // Copy remaining elements
+    while (i < a.length) merged[k++] = a[i++];
+    while (j < b.length) merged[k++] = b[j++];
+    
+    return merged;
+}
+
+// Example
+int[] a = {1, 3, 5, 7};
+int[] b = {2, 4, 6, 8};
+System.out.println(Arrays.toString(mergeSorted(a, b)));
+// Output: [1, 2, 3, 4, 5, 6, 7, 8]</code></pre><h4>Approach 2: Stream Concat + Sort</h4><pre><code>public static int[] mergeSimple(int[] a, int[] b) {
+    return IntStream.concat(
+        Arrays.stream(a), Arrays.stream(b))
+        .sorted()
+        .toArray();
+}</code></pre><h4>Approach 3: Merge into first array (LeetCode style)</h4><pre><code>// nums1 has extra space at end
+public static void mergeInPlace(int[] nums1, int m,
+                                int[] nums2, int n) {
+    int i = m - 1, j = n - 1, k = m + n - 1;
+    while (j >= 0) {
+        if (i >= 0 && nums1[i] > nums2[j]) {
+            nums1[k--] = nums1[i--];
+        } else {
+            nums1[k--] = nums2[j--];
+        }
+    }
+}
+
+// nums1 = [1,2,3,0,0,0], m=3, nums2 = [2,5,6], n=3
+// Result: nums1 = [1,2,2,3,5,6]</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th></tr><tr><td>Two Pointer</td><td>O(m+n)</td><td>O(m+n)</td></tr><tr><td>Stream</td><td>O((m+n)log(m+n))</td><td>O(m+n)</td></tr><tr><td>In-Place</td><td>O(m+n)</td><td>O(1)</td></tr></table>`},
+{id:722,part:"S",level:"Senior",category:"Coding",q:"✅ Valid Parentheses — Check if brackets are balanced: (), {}, []",a:`<h4>Stack-Based Solution (Standard)</h4><pre><code>public static boolean isValid(String s) {
+    Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+    Map&lt;Character, Character&gt; pairs = Map.of(
+        ')', '(', '}', '{', ']', '[');
+    
+    for (char ch : s.toCharArray()) {
+        if (pairs.containsValue(ch)) {
+            // Opening bracket → push to stack
+            stack.push(ch);
+        } else if (pairs.containsKey(ch)) {
+            // Closing bracket → check match
+            if (stack.isEmpty() ||
+                stack.pop() != pairs.get(ch)) {
+                return false;
+            }
+        }
+    }
+    return stack.isEmpty();
+}
+
+// Examples
+isValid("()");       // true
+isValid("()[]{}");   // true
+isValid("(]");       // false
+isValid("({[]})");   // true (nested)
+isValid("(");        // false (unclosed)</code></pre><h4>Test Cases for Interviews</h4><table><tr><th>Input</th><th>Expected</th><th>Why</th></tr><tr><td><code>"()"</code></td><td>true</td><td>Simple match</td></tr><tr><td><code>"()[]{}"</code></td><td>true</td><td>Multiple types</td></tr><tr><td><code>"(]"</code></td><td>false</td><td>Mismatch</td></tr><tr><td><code>"([)]"</code></td><td>false</td><td>Interleaved (not nested)</td></tr><tr><td><code>"{[]}"</code></td><td>true</td><td>Properly nested</td></tr><tr><td><code>""</code></td><td>true</td><td>Empty string is valid</td></tr><tr><td><code>"("</code></td><td>false</td><td>Unclosed bracket</td></tr></table><p><strong>Complexity:</strong> Time O(n), Space O(n). This is a classic <strong>Stack</strong> problem — always use Stack for matching brackets.</p>`},
+{id:723,part:"S",level:"Senior",category:"Framework",q:"✅ API Response Validation in Java — REST Assured + Playwright framework",a:`<h4>REST Assured — Validate API Response</h4><pre><code>import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+@Test
+public void validateApiResponse() {
+    // GET request with validation
+    Response res = given()
+        .baseUri("https://jsonplaceholder.typicode.com")
+        .header("Accept", "application/json")
+    .when()
+        .get("/users/1")
+    .then()
+        .statusCode(200)
+        .contentType(ContentType.JSON)
+        .body("name", notNullValue())
+        .body("email", containsString("@"))
+        .body("id", equalTo(1))
+        .extract().response();
+
+    // Extract and assert programmatically
+    String name = res.jsonPath().getString("name");
+    String email = res.jsonPath().getString("email");
+    assertNotNull(name, "Name should not be null");
+    assertTrue(email.contains("@"), "Invalid email");
+    
+    System.out.println("User: " + name);
+    System.out.println("Email: " + email);
+}</code></pre><h4>Validate List Response</h4><pre><code>@Test
+public void validateListResponse() {
+    given()
+        .baseUri("https://jsonplaceholder.typicode.com")
+    .when()
+        .get("/users")
+    .then()
+        .statusCode(200)
+        .body("size()", greaterThan(0))
+        .body("name", everyItem(notNullValue()))
+        .body("email", everyItem(containsString("@")));
+}</code></pre><h4>Pre-condition API Check Before UI Test</h4><pre><code>@BeforeMethod
+public void verifyApiBeforeUI() {
+    // Ensure backend is healthy before launching browser
+    int status = given()
+        .baseUri(BASE_URL)
+        .get("/health")
+        .statusCode();
+    assertEquals(status, 200,
+        "API is down — skipping UI test");
+}</code></pre>`},
+{id:724,part:"S",level:"Senior",category:"Framework",q:"✅ Read JSON File in Java — Parse test data from JSON for automation",a:`<h4>Approach 1: Jackson (Most Popular)</h4><pre><code>import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+
+public class JsonReader {
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    public static JsonNode readJsonFile(String filePath) {
+        try {
+            return mapper.readTree(new File(filePath));
+        } catch (IOException e) {
+            throw new RuntimeException(
+                "Failed to read JSON: " + filePath, e);
+        }
+    }
+
+    // Usage in test
+    public static void main(String[] args) {
+        JsonNode data = readJsonFile("testdata-stu-qa.json");
+        String phone = data.get("phone").asText();
+        String otp = data.get("otp").asText();
+        System.out.println("Phone: " + phone);
+        System.out.println("OTP: " + otp);
+    }
+}</code></pre><h4>Approach 2: Gson (Google)</h4><pre><code>import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+public static JsonObject readWithGson(String path) {
+    String content = Files.readString(Path.of(path));
+    return new Gson().fromJson(content, JsonObject.class);
+}
+
+// Usage
+JsonObject data = readWithGson("testdata.json");
+String url = data.get("baseUrl").getAsString();</code></pre><h4>Approach 3: Map to POJO</h4><pre><code>// TestData.java
+public class TestData {
+    public String phone;
+    public String otp;
+    public String baseUrl;
+    public CardDetails card;
+    
+    public static class CardDetails {
+        public String number;
+        public String expiry;
+        public String cvv;
+    }
+}
+
+// Read and map
+TestData data = new ObjectMapper()
+    .readValue(new File("testdata.json"), TestData.class);
+System.out.println(data.card.number);
+// Output: 5506900480000008</code></pre><table><tr><th>Library</th><th>Dependency</th><th>Best For</th></tr><tr><td>Jackson</td><td>com.fasterxml.jackson.core</td><td>Spring Boot, REST Assured</td></tr><tr><td>Gson</td><td>com.google.code.gson</td><td>Simple parsing, Android</td></tr><tr><td>org.json</td><td>org.json</td><td>Quick prototyping</td></tr></table>`},
+{id:725,part:"S",level:"Senior",category:"Real-World",q:"🏢 Real-World Production Scenario — Build automation utility class combining all coding concepts",a:`<h4>Scenario: E-Commerce Playwright Automation Framework</h4><pre><code>/**
+ * TestDataProcessor.java
+ * Real-world utility class used in Playwright automation framework.
+ * Combines: JSON reading, dedup, validation, string processing.
+ */
+public class TestDataProcessor {
+
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    // ✅ READ JSON TEST DATA
+    public static JsonNode loadTestData(String env) {
+        String path = "testdata-" + env + ".json";
+        try {
+            return mapper.readTree(
+                new File("src/test/resources/" + path));
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot load: " + path);
+        }
+    }
+
+    // ✅ REMOVE DUPLICATE PRODUCT IDs
+    public static List&lt;String&gt; deduplicateProductIds(
+            List&lt;String&gt; productIds) {
+        return new ArrayList&lt;&gt;(
+            new LinkedHashSet&lt;&gt;(productIds));
+    }
+
+    // ✅ VALIDATE API RESPONSE BEFORE UI TEST
+    public static boolean validateApiHealth(String baseUrl) {
+        Response res = given().baseUri(baseUrl)
+            .get("/api/health");
+        return res.statusCode() == 200
+            && res.jsonPath().getString("status")
+                   .equals("UP");
+    }
+
+    // ✅ VERIFY RESPONSE FIELDS
+    public static void assertProductResponse(Response res) {
+        assertEquals(res.statusCode(), 200);
+        JsonPath json = res.jsonPath();
+        assertNotNull(json.getString("data.name"));
+        assertTrue(json.getDouble("data.price") > 0);
+        assertNotNull(json.getString("data.id"));
+    }
+
+    // ✅ PROCESS DYNAMIC DATA
+    public static String generateOrderRef() {
+        return "ORD-" + reverseString(
+            String.valueOf(System.currentTimeMillis()));
+    }
+
+    private static String reverseString(String s) {
+        return new StringBuilder(s).reverse().toString();
+    }
+}</code></pre><h4>Usage in Playwright Test</h4><pre><code>@Test
+public void testPlaceOrder() {
+    // 1. Read test data from JSON
+    JsonNode data = TestDataProcessor.loadTestData("qa");
+    String baseUrl = data.get("baseUrl").asText();
+
+    // 2. Validate API before UI
+    assertTrue(TestDataProcessor.validateApiHealth(baseUrl),
+        "API is down — aborting UI test");
+
+    // 3. Get product IDs (remove duplicates)
+    List&lt;String&gt; rawIds = List.of(
+        "PROD-1", "PROD-2", "PROD-1", "PROD-3");
+    List&lt;String&gt; uniqueIds =
+        TestDataProcessor.deduplicateProductIds(rawIds);
+    // [PROD-1, PROD-2, PROD-3]
+
+    // 4. Launch Playwright and place order
+    page.navigate(baseUrl + "/products/" + uniqueIds.get(0));
+    page.click("text=Add to Cart");
+    page.click("text=Checkout");
+    
+    // 5. Verify order confirmation
+    assertThat(page.locator(".order-success"))
+        .isVisible();
+}</code></pre><h4>Why These Coding Skills Matter for SDET</h4><table><tr><th>Coding Concept</th><th>Where Used in Framework</th></tr><tr><td>Reverse String</td><td>Generate unique test IDs, data masking</td></tr><tr><td>Find Duplicates</td><td>Validate no duplicate entries in test data</td></tr><tr><td>Palindrome</td><td>Input validation testing</td></tr><tr><td>Character Frequency</td><td>Password strength validation</td></tr><tr><td>Two Sum</td><td>Cart total verification, discount logic</td></tr><tr><td>Remove Duplicates</td><td>Clean test data, unique assertions</td></tr><tr><td>Merge Sorted</td><td>Combine API results, merge test suites</td></tr><tr><td>Valid Parentheses</td><td>XPath/CSS selector validation</td></tr><tr><td>API Validation</td><td>Pre-condition checks, health monitoring</td></tr><tr><td>Read JSON</td><td>Test data management, config loading</td></tr></table>`}
+);
+
 // ============================================================
 // RENDER ENGINE
 // ============================================================
@@ -2268,6 +2698,11 @@ function renderSidebar() {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#20c997">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#f06595">FAQ Java Coding</div></div>';
+    questions.filter(q => q.part === 'S').forEach(q => {
+        html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#f06595">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
+    });
+
     sidebar.innerHTML = html;
 }
 
@@ -2288,7 +2723,7 @@ function renderMain() {
             <div class="hero-stat"><div class="hero-stat-value">${totalQ}</div><div class="hero-stat-label">Total</div></div>
             <div class="hero-stat"><div class="hero-stat-value">${seniorQ}</div><div class="hero-stat-label">🔥 Senior</div></div>
             <div class="hero-stat"><div class="hero-stat-value">${midQ}</div><div class="hero-stat-label">🌱 Mid</div></div>
-            <div class="hero-stat"><div class="hero-stat-value">18</div><div class="hero-stat-label">Parts</div></div>
+            <div class="hero-stat"><div class="hero-stat-value">19</div><div class="hero-stat-label">Parts</div></div>
         </div>
     </div>`;
 
@@ -2319,6 +2754,7 @@ function renderMain() {
                 <option value="P">🌿 Git & Version Control (${questions.filter(q=>q.part==='P').length})</option>
                 <option value="Q">🛡️ Non-Functional Testing (${questions.filter(q=>q.part==='Q').length})</option>
                 <option value="R">🌐 Web Testing & BVA (${questions.filter(q=>q.part==='R').length})</option>
+                <option value="S">💻 FAQ Java Coding (${questions.filter(q=>q.part==='S').length})</option>
             </select>
         </div>
         <div class="filter-group">
@@ -2437,6 +2873,10 @@ function renderMain() {
     // Part R Header
     html += `<div class="section-header part-r"><span class="section-icon">🌐</span><div><div class="section-title">Web Testing & BVA</div><div class="section-desc">Boundary Value Analysis, Equivalence Partitioning, Cross-Browser, Responsive Design, Cookie/Session, Form Validation, PWA</div></div></div>`;
     questions.filter(q => q.part === 'R').forEach((q, i) => { html += renderCard(q, i); });
+
+    // Part S Header
+    html += `<div class="section-header part-s"><span class="section-icon">💻</span><div><div class="section-title">FAQ Java Coding Questions</div><div class="section-desc">Reverse String, Find Duplicates, Palindrome, Two Sum, Valid Parentheses, Merge Arrays, API Validation, Read JSON — all in Java for SDET interviews</div></div></div>`;
+    questions.filter(q => q.part === 'S').forEach((q, i) => { html += renderCard(q, i); });
 
     main.innerHTML = html;
 }
