@@ -227,6 +227,7 @@
         .section-header.part-q { border-left: 4px solid #cc5de8; }
         .section-header.part-r { border-left: 4px solid #20c997; }
         .section-header.part-s { border-left: 4px solid #f06595; }
+        .section-header.part-t { border-left: 4px solid #e67700; }
         .section-icon { font-size: 28px; }
         .section-title { font-size: 18px; font-weight: 700; }
         .section-desc { font-size: 13px; color: var(--text-secondary); }
@@ -271,6 +272,7 @@
         .qa-card.part-q .qa-number { background: rgba(204,93,232,.1); color: #cc5de8; }
         .qa-card.part-r .qa-number { background: rgba(32,201,151,.1); color: #20c997; }
         .qa-card.part-s .qa-number { background: rgba(240,101,149,.1); color: #f06595; }
+        .qa-card.part-t .qa-number { background: rgba(230,119,0,.1); color: #e67700; }
 
         .qa-question { flex: 1; font-weight: 600; font-size: 15px; line-height: 1.5; }
         .qa-category {
@@ -3072,12 +3074,786 @@ map.put("banana", 3); // hash → same bucket 6
 );
 
 // ============================================================
+// PART T — DATA STRUCTURES & ALGORITHMS
+// ============================================================
+questions.push(
+{id:741,part:"T",level:"Senior",category:"Complexity",q:"What is Big-O Notation? Explain time and space complexity with examples relevant to testing",a:`<h4>Big-O Cheat Sheet for SDETs</h4><p><strong>Big-O</strong> describes the <strong>worst-case growth rate</strong> of an algorithm as input size (n) increases. It tells you <em>how your test code will scale</em>.</p><table><tr><th>Big-O</th><th>Name</th><th>Example in Testing</th><th>1K items</th><th>1M items</th></tr><tr><td>O(1)</td><td>Constant</td><td>HashMap.get(), array index lookup</td><td>1 op</td><td>1 op</td></tr><tr><td>O(log n)</td><td>Logarithmic</td><td>Binary search in sorted test data</td><td>~10 ops</td><td>~20 ops</td></tr><tr><td>O(n)</td><td>Linear</td><td>Loop through API responses, find element</td><td>1K ops</td><td>1M ops</td></tr><tr><td>O(n log n)</td><td>Linearithmic</td><td>Sorting test results, Collections.sort()</td><td>10K ops</td><td>20M ops</td></tr><tr><td>O(n²)</td><td>Quadratic</td><td>Nested loop: compare all pairs (brute force)</td><td>1M ops</td><td>1T ops ❌</td></tr><tr><td>O(2ⁿ)</td><td>Exponential</td><td>Recursive subsets — never use in tests!</td><td>💥</td><td>💥</td></tr></table><h4>Space Complexity</h4><pre><code>// O(1) space — in-place
+public void reverseArray(int[] arr) {
+    int l = 0, r = arr.length - 1;
+    while (l &lt; r) { int t = arr[l]; arr[l++] = arr[r]; arr[r--] = t; }
+}
+
+// O(n) space — creates new structure
+public List&lt;String&gt; filterFailed(List&lt;TestResult&gt; results) {
+    return results.stream()
+        .filter(r -&gt; r.getStatus() == FAIL)
+        .map(TestResult::getName)
+        .collect(Collectors.toList());  // new list = O(n)
+}</code></pre><h4>Why SDETs Must Know This</h4><p>If your test utility runs in O(n²) on 10K test data rows, it takes <strong>100 million operations</strong>. Switch to O(n log n) and it drops to <strong>130K</strong>. This is the difference between a test suite that runs in seconds vs minutes.</p>`},
+{id:742,part:"T",level:"Senior",category:"Arrays",q:"Array vs ArrayList vs LinkedList — When to use which? Compare with Java examples",a:`<h4>Comparison Table</h4><table><tr><th>Feature</th><th>int[] (Array)</th><th>ArrayList</th><th>LinkedList</th></tr><tr><td>Size</td><td>Fixed</td><td>Dynamic (grows 50%)</td><td>Dynamic</td></tr><tr><td>Get by index</td><td>O(1) ✅</td><td>O(1) ✅</td><td>O(n) ❌</td></tr><tr><td>Add at end</td><td>N/A</td><td>O(1) amortized</td><td>O(1) ✅</td></tr><tr><td>Add at beginning</td><td>N/A</td><td>O(n) ❌ (shift all)</td><td>O(1) ✅</td></tr><tr><td>Remove by index</td><td>N/A</td><td>O(n) (shift)</td><td>O(n) (traverse)</td></tr><tr><td>Memory</td><td>Compact ✅</td><td>Compact + overhead</td><td>Scattered (pointers)</td></tr><tr><td>Thread-safe</td><td>No</td><td>No (use CopyOnWriteArrayList)</td><td>No</td></tr></table><h4>When to Use Each</h4><pre><code>// Array: Fixed-size, primitive data, max performance
+int[] testScores = new int[100];
+String[] browsers = {"chrome", "firefox", "webkit"};
+
+// ArrayList: Most common — dynamic size, random access
+List&lt;String&gt; testCases = new ArrayList&lt;&gt;();
+testCases.add("login_test");
+testCases.get(0);  // O(1) ✅
+
+// LinkedList: Frequent add/remove at head (queue pattern)
+Queue&lt;String&gt; taskQueue = new LinkedList&lt;&gt;();
+taskQueue.offer("run_smoke");  // O(1)
+taskQueue.poll();              // O(1)</code></pre><h4>SDET Context</h4><p>Use <strong>ArrayList</strong> 95% of the time. Use <strong>LinkedList</strong> only for queue/deque patterns (e.g., BFS traversal, task scheduling). Use raw <strong>arrays</strong> for primitive perf-critical code (e.g., large test data matrices).</p>`},
+{id:743,part:"T",level:"Senior",category:"LinkedList",q:"Implement a Singly Linked List in Java — insert, delete, search, reverse",a:`<h4>Node Class + Core Operations</h4><pre><code>class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+public class SinglyLinkedList {
+    private ListNode head;
+
+    // Insert at head — O(1)
+    public void insertAtHead(int val) {
+        ListNode node = new ListNode(val);
+        node.next = head;
+        head = node;
+    }
+
+    // Insert at tail — O(n)
+    public void insertAtTail(int val) {
+        ListNode node = new ListNode(val);
+        if (head == null) { head = node; return; }
+        ListNode curr = head;
+        while (curr.next != null) curr = curr.next;
+        curr.next = node;
+    }
+
+    // Delete by value — O(n)
+    public boolean delete(int val) {
+        if (head == null) return false;
+        if (head.val == val) { head = head.next; return true; }
+        ListNode curr = head;
+        while (curr.next != null &amp;&amp; curr.next.val != val) curr = curr.next;
+        if (curr.next == null) return false;
+        curr.next = curr.next.next;
+        return true;
+    }
+
+    // Search — O(n)
+    public boolean contains(int val) {
+        ListNode curr = head;
+        while (curr != null) {
+            if (curr.val == val) return true;
+            curr = curr.next;
+        }
+        return false;
+    }
+
+    // Reverse — O(n) time, O(1) space
+    public void reverse() {
+        ListNode prev = null, curr = head;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        head = prev;
+    }
+}</code></pre><table><tr><th>Operation</th><th>Time</th><th>Space</th></tr><tr><td>Insert head</td><td>O(1)</td><td>O(1)</td></tr><tr><td>Insert tail</td><td>O(n)</td><td>O(1)</td></tr><tr><td>Delete</td><td>O(n)</td><td>O(1)</td></tr><tr><td>Search</td><td>O(n)</td><td>O(1)</td></tr><tr><td>Reverse</td><td>O(n)</td><td>O(1)</td></tr></table>`},
+{id:744,part:"T",level:"Senior",category:"Stack",q:"Stack Data Structure — Implementation, use cases, and the call stack in Java",a:`<h4>Stack = LIFO (Last In, First Out)</h4><pre><code>// Java built-in: Use Deque (not legacy Stack class)
+Deque&lt;String&gt; stack = new ArrayDeque&lt;&gt;();
+stack.push("step1");  // push
+stack.push("step2");
+stack.peek();          // "step2" (top, no removal)
+stack.pop();           // "step2" (removes)
+stack.isEmpty();       // false</code></pre><h4>Classic Interview Problems Using Stack</h4><pre><code>// 1. Valid Parentheses — O(n)
+public boolean isValid(String s) {
+    Deque&lt;Character&gt; stack = new ArrayDeque&lt;&gt;();
+    Map&lt;Character,Character&gt; map = Map.of(')','(', '}','{', ']','[');
+    for (char c : s.toCharArray()) {
+        if (map.containsValue(c)) stack.push(c);
+        else if (map.containsKey(c)) {
+            if (stack.isEmpty() || stack.pop() != map.get(c)) return false;
+        }
+    }
+    return stack.isEmpty();
+}
+
+// 2. Reverse a string using stack
+public String reverse(String s) {
+    Deque&lt;Character&gt; stack = new ArrayDeque&lt;&gt;();
+    for (char c : s.toCharArray()) stack.push(c);
+    StringBuilder sb = new StringBuilder();
+    while (!stack.isEmpty()) sb.append(stack.pop());
+    return sb.toString();
+}
+
+// 3. Browser Back/Forward (real-world)
+Deque&lt;String&gt; backStack = new ArrayDeque&lt;&gt;();
+Deque&lt;String&gt; forwardStack = new ArrayDeque&lt;&gt;();
+backStack.push(currentUrl);  // navigate
+currentUrl = backStack.pop();  // back button</code></pre><h4>The Call Stack (Recursion)</h4><p>Every recursive function call is pushed onto the <strong>call stack</strong>. Too deep = <code>StackOverflowError</code>. This is why iterative solutions are preferred for large inputs in test frameworks.</p><table><tr><th>Operation</th><th>Time</th></tr><tr><td>push</td><td>O(1)</td></tr><tr><td>pop</td><td>O(1)</td></tr><tr><td>peek</td><td>O(1)</td></tr><tr><td>search</td><td>O(n)</td></tr></table>`},
+{id:745,part:"T",level:"Senior",category:"Queue",q:"Queue and Deque — FIFO processing, BFS traversal, and Producer-Consumer pattern",a:`<h4>Queue = FIFO (First In, First Out)</h4><pre><code>// Queue interface — use LinkedList or ArrayDeque
+Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+queue.offer("task1");  // enqueue (returns false if full, no exception)
+queue.offer("task2");
+queue.peek();          // "task1" (front, no removal)
+queue.poll();          // "task1" (removes front)
+
+// Deque = Double-Ended Queue (both ends)
+Deque&lt;String&gt; deque = new ArrayDeque&lt;&gt;();
+deque.offerFirst("A");  // add front
+deque.offerLast("B");   // add back
+deque.pollFirst();      // remove front
+deque.pollLast();       // remove back</code></pre><h4>Use Case 1: BFS (Level-Order Traversal)</h4><pre><code>public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+    if (root == null) return result;
+    Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        List&lt;Integer&gt; level = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; size; i++) {
+            TreeNode node = queue.poll();
+            level.add(node.val);
+            if (node.left != null) queue.offer(node.left);
+            if (node.right != null) queue.offer(node.right);
+        }
+        result.add(level);
+    }
+    return result;
+}</code></pre><h4>Use Case 2: Test Task Queue (SDET)</h4><pre><code>// Producer-Consumer pattern for parallel test execution
+BlockingQueue&lt;TestTask&gt; taskQueue = new LinkedBlockingQueue&lt;&gt;(100);
+
+// Producer: adds test tasks
+taskQueue.put(new TestTask("login_test", "chrome"));
+
+// Consumer: workers pick tasks
+TestTask task = taskQueue.take();  // blocks until available
+task.execute();</code></pre><table><tr><th>Operation</th><th>LinkedList</th><th>ArrayDeque</th><th>PriorityQueue</th></tr><tr><td>offer</td><td>O(1)</td><td>O(1) amortized</td><td>O(log n)</td></tr><tr><td>poll</td><td>O(1)</td><td>O(1)</td><td>O(log n)</td></tr><tr><td>peek</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr></table>`},
+{id:746,part:"T",level:"Senior",category:"HashMap",q:"HashMap vs TreeMap vs LinkedHashMap — Internal working, collisions, and when to use each",a:`<h4>Comparison</h4><table><tr><th>Feature</th><th>HashMap</th><th>TreeMap</th><th>LinkedHashMap</th></tr><tr><td>Order</td><td>No order</td><td>Sorted by key</td><td>Insertion order</td></tr><tr><td>get/put</td><td>O(1) avg</td><td>O(log n)</td><td>O(1) avg</td></tr><tr><td>Null key</td><td>1 allowed</td><td>Not allowed</td><td>1 allowed</td></tr><tr><td>Internal</td><td>Array + LinkedList/Tree</td><td>Red-Black Tree</td><td>HashMap + Doubly LL</td></tr><tr><td>Use case</td><td>Fast lookup</td><td>Sorted iteration</td><td>LRU cache, ordered output</td></tr></table><h4>HashMap Internal Working (Java 8+)</h4><pre><code>// 1. Key → hashCode() → bucket index
+int hash = key.hashCode();
+int index = hash &amp; (capacity - 1);  // bitwise mod
+
+// 2. Collision handling:
+//    - Java 7: LinkedList in bucket (O(n) worst)
+//    - Java 8: If bucket has &gt;8 entries → converts to Red-Black Tree (O(log n))
+
+// 3. Load factor = 0.75 → resize (rehash) when 75% full
+//    Capacity doubles: 16 → 32 → 64
+
+// 4. equals() + hashCode() contract:
+//    If a.equals(b) → a.hashCode() == b.hashCode()  (MUST)
+//    If hashCode same → NOT necessarily equals        (collision)</code></pre><h4>SDET Usage Patterns</h4><pre><code>// HashMap: Fast test data lookup
+Map&lt;String, String&gt; testData = new HashMap&lt;&gt;();
+testData.put("phone", "7000900001");
+testData.get("phone");  // O(1)
+
+// LinkedHashMap: Preserve insertion order for reports
+Map&lt;String, String&gt; results = new LinkedHashMap&lt;&gt;();
+results.put("login", "PASS");
+results.put("checkout", "FAIL");  // order preserved in report
+
+// TreeMap: Sorted execution order
+TreeMap&lt;Integer, String&gt; prioritized = new TreeMap&lt;&gt;();
+prioritized.put(1, "smoke");
+prioritized.put(3, "regression");
+prioritized.put(2, "sanity");
+// Iterates: 1→smoke, 2→sanity, 3→regression</code></pre>`},
+{id:747,part:"T",level:"Senior",category:"HashSet",q:"HashSet vs TreeSet vs LinkedHashSet — Uniqueness, ordering, and deduplication",a:`<h4>Set = No Duplicates Allowed</h4><table><tr><th>Feature</th><th>HashSet</th><th>TreeSet</th><th>LinkedHashSet</th></tr><tr><td>Order</td><td>No order</td><td>Sorted (natural/comparator)</td><td>Insertion order</td></tr><tr><td>add/contains</td><td>O(1)</td><td>O(log n)</td><td>O(1)</td></tr><tr><td>Null</td><td>1 null</td><td>No null</td><td>1 null</td></tr><tr><td>Internal</td><td>HashMap</td><td>TreeMap</td><td>LinkedHashMap</td></tr></table><pre><code>// Deduplicate test data — O(n)
+List&lt;String&gt; rawIds = List.of("TC-001", "TC-002", "TC-001", "TC-003", "TC-002");
+Set&lt;String&gt; unique = new LinkedHashSet&lt;&gt;(rawIds);
+// [TC-001, TC-002, TC-003] — order preserved, duplicates removed
+
+// Find duplicates in O(n)
+public static &lt;T&gt; Set&lt;T&gt; findDuplicates(List&lt;T&gt; list) {
+    Set&lt;T&gt; seen = new HashSet&lt;&gt;();
+    Set&lt;T&gt; dups = new LinkedHashSet&lt;&gt;();
+    for (T item : list) {
+        if (!seen.add(item)) dups.add(item);
+    }
+    return dups;
+}
+
+// Check if two lists have same elements (order-independent)
+Set&lt;String&gt; set1 = new HashSet&lt;&gt;(apiResponse);
+Set&lt;String&gt; set2 = new HashSet&lt;&gt;(dbResults);
+Assert.assertEquals(set1, set2, "API and DB should return same data");</code></pre><h4>Custom Object in HashSet — Must Override hashCode + equals</h4><pre><code>class TestCase {
+    String id;
+    @Override public boolean equals(Object o) { return id.equals(((TestCase)o).id); }
+    @Override public int hashCode() { return id.hashCode(); }
+}</code></pre>`},
+{id:748,part:"T",level:"Senior",category:"Tree",q:"Binary Search Tree (BST) — Insert, search, delete, and validate BST property",a:`<h4>BST Property: left &lt; root &lt; right</h4><pre><code>class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+public class BST {
+    private TreeNode root;
+
+    // Insert — O(log n) avg, O(n) worst (skewed)
+    public TreeNode insert(TreeNode node, int val) {
+        if (node == null) return new TreeNode(val);
+        if (val &lt; node.val) node.left = insert(node.left, val);
+        else if (val &gt; node.val) node.right = insert(node.right, val);
+        return node;
+    }
+
+    // Search — O(log n) avg
+    public boolean search(TreeNode node, int val) {
+        if (node == null) return false;
+        if (val == node.val) return true;
+        return val &lt; node.val ? search(node.left, val) : search(node.right, val);
+    }
+
+    // Validate BST — O(n)
+    public boolean isValidBST(TreeNode node) {
+        return validate(node, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    private boolean validate(TreeNode node, long min, long max) {
+        if (node == null) return true;
+        if (node.val &lt;= min || node.val &gt;= max) return false;
+        return validate(node.left, min, node.val)
+            &amp;&amp; validate(node.right, node.val, max);
+    }
+
+    // In-order traversal → sorted output
+    public void inOrder(TreeNode node, List&lt;Integer&gt; result) {
+        if (node == null) return;
+        inOrder(node.left, result);
+        result.add(node.val);
+        inOrder(node.right, result);
+    }
+}</code></pre><table><tr><th>Operation</th><th>Average</th><th>Worst (skewed)</th></tr><tr><td>Insert</td><td>O(log n)</td><td>O(n)</td></tr><tr><td>Search</td><td>O(log n)</td><td>O(n)</td></tr><tr><td>Delete</td><td>O(log n)</td><td>O(n)</td></tr><tr><td>In-order</td><td>O(n)</td><td>O(n)</td></tr></table>`},
+{id:749,part:"T",level:"Senior",category:"Tree",q:"Tree Traversals — Preorder, Inorder, Postorder, Level-Order (BFS) with Java implementations",a:`<h4>Four Traversal Types</h4><pre><code>/*
+        1
+       / \\
+      2   3
+     / \\
+    4   5
+
+Preorder  (Root-L-R): 1, 2, 4, 5, 3  → used for: copy/serialize tree
+Inorder   (L-Root-R): 4, 2, 5, 1, 3  → used for: BST sorted output
+Postorder (L-R-Root): 4, 5, 2, 3, 1  → used for: delete tree, evaluate expressions
+Level     (BFS):      1, 2, 3, 4, 5  → used for: shortest path, level processing
+*/
+
+// Recursive (all O(n) time, O(h) space where h = height)
+public void preorder(TreeNode n, List&lt;Integer&gt; r) {
+    if (n == null) return;
+    r.add(n.val);               // Root first
+    preorder(n.left, r);
+    preorder(n.right, r);
+}
+
+public void inorder(TreeNode n, List&lt;Integer&gt; r) {
+    if (n == null) return;
+    inorder(n.left, r);
+    r.add(n.val);               // Root middle
+    inorder(n.right, r);
+}
+
+public void postorder(TreeNode n, List&lt;Integer&gt; r) {
+    if (n == null) return;
+    postorder(n.left, r);
+    postorder(n.right, r);
+    r.add(n.val);               // Root last
+}
+
+// Iterative Preorder (using Stack)
+public List&lt;Integer&gt; preorderIterative(TreeNode root) {
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    Deque&lt;TreeNode&gt; stack = new ArrayDeque&lt;&gt;();
+    if (root != null) stack.push(root);
+    while (!stack.isEmpty()) {
+        TreeNode node = stack.pop();
+        result.add(node.val);
+        if (node.right != null) stack.push(node.right); // right first
+        if (node.left != null) stack.push(node.left);   // left on top
+    }
+    return result;
+}</code></pre><table><tr><th>Traversal</th><th>Order</th><th>Use Case</th></tr><tr><td>Preorder</td><td>Root → L → R</td><td>Serialize, copy tree</td></tr><tr><td>Inorder</td><td>L → Root → R</td><td>BST → sorted array</td></tr><tr><td>Postorder</td><td>L → R → Root</td><td>Delete tree, evaluate expr</td></tr><tr><td>Level-order</td><td>BFS (queue)</td><td>Shortest path, level sums</td></tr></table>`},
+{id:750,part:"T",level:"Senior",category:"Graph",q:"Graph Representations — Adjacency List vs Matrix, and when to use each",a:`<h4>Two Ways to Represent a Graph</h4><pre><code>// Adjacency List — O(V + E) space ✅ (preferred for sparse graphs)
+Map&lt;String, List&lt;String&gt;&gt; adjList = new HashMap&lt;&gt;();
+adjList.put("Login",    List.of("Dashboard", "ForgotPassword"));
+adjList.put("Dashboard", List.of("Profile", "Settings", "Logout"));
+adjList.put("Profile",   List.of("EditProfile", "Dashboard"));
+
+// Adjacency Matrix — O(V²) space (better for dense graphs)
+//          Login  Dash  Profile  Settings
+// Login   [  0,    1,     0,       0   ]
+// Dash    [  0,    0,     1,       1   ]
+// Profile [  0,    1,     0,       0   ]
+// Settings[  0,    0,     0,       0   ]
+int[][] adjMatrix = new int[4][4];
+adjMatrix[0][1] = 1;  // Login → Dashboard</code></pre><h4>Comparison</h4><table><tr><th>Feature</th><th>Adjacency List</th><th>Adjacency Matrix</th></tr><tr><td>Space</td><td>O(V + E) ✅</td><td>O(V²)</td></tr><tr><td>Add edge</td><td>O(1)</td><td>O(1)</td></tr><tr><td>Check edge exists</td><td>O(degree)</td><td>O(1) ✅</td></tr><tr><td>Find all neighbors</td><td>O(degree) ✅</td><td>O(V)</td></tr><tr><td>Best for</td><td>Sparse graphs (most real apps)</td><td>Dense graphs, weighted</td></tr></table><h4>SDET Context: App Navigation as a Graph</h4><p>Your web application's pages and navigation links form a <strong>directed graph</strong>. You can use BFS/DFS to:</p><ul><li>Verify all pages are reachable from the login page</li><li>Find the shortest navigation path between two pages</li><li>Detect dead-end pages (no outgoing links)</li><li>Discover circular navigation loops</li></ul>`},
+{id:751,part:"T",level:"Senior",category:"Graph",q:"BFS vs DFS — Breadth-First and Depth-First Search with Java implementations",a:`<h4>BFS = Level by Level (Queue) | DFS = Go Deep (Stack/Recursion)</h4><pre><code>// BFS — uses Queue, finds shortest path in unweighted graph
+public void bfs(Map&lt;String, List&lt;String&gt;&gt; graph, String start) {
+    Set&lt;String&gt; visited = new HashSet&lt;&gt;();
+    Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+    queue.offer(start);
+    visited.add(start);
+
+    while (!queue.isEmpty()) {
+        String node = queue.poll();
+        System.out.println("Visited: " + node);
+        for (String neighbor : graph.getOrDefault(node, List.of())) {
+            if (!visited.contains(neighbor)) {
+                visited.add(neighbor);
+                queue.offer(neighbor);
+            }
+        }
+    }
+}
+
+// DFS — uses Stack (or recursion), explores full depth first
+public void dfs(Map&lt;String, List&lt;String&gt;&gt; graph, String start) {
+    Set&lt;String&gt; visited = new HashSet&lt;&gt;();
+    dfsHelper(graph, start, visited);
+}
+private void dfsHelper(Map&lt;String, List&lt;String&gt;&gt; graph, String node, Set&lt;String&gt; visited) {
+    visited.add(node);
+    System.out.println("Visited: " + node);
+    for (String neighbor : graph.getOrDefault(node, List.of())) {
+        if (!visited.contains(neighbor)) {
+            dfsHelper(graph, neighbor, visited);
+        }
+    }
+}</code></pre><table><tr><th>Feature</th><th>BFS</th><th>DFS</th></tr><tr><td>Data structure</td><td>Queue</td><td>Stack / Recursion</td></tr><tr><td>Order</td><td>Level by level</td><td>Go deep, then backtrack</td></tr><tr><td>Shortest path?</td><td>Yes (unweighted) ✅</td><td>No</td></tr><tr><td>Space</td><td>O(V) — queue size</td><td>O(V) — call stack</td></tr><tr><td>Time</td><td>O(V + E)</td><td>O(V + E)</td></tr><tr><td>Use case</td><td>Shortest path, level traversal</td><td>Cycle detection, topological sort</td></tr></table>`},
+{id:752,part:"T",level:"Senior",category:"Heap",q:"Heap / PriorityQueue — Min-heap, max-heap, and Top-K problems in Java",a:`<h4>Heap = Complete Binary Tree with Heap Property</h4><pre><code>// Min-Heap (default in Java) — smallest element always on top
+PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+minHeap.offer(5); minHeap.offer(2); minHeap.offer(8);
+minHeap.peek();   // 2 (smallest)
+minHeap.poll();   // 2 (removes smallest)
+
+// Max-Heap — largest on top
+PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+maxHeap.offer(5); maxHeap.offer(2); maxHeap.offer(8);
+maxHeap.peek();   // 8 (largest)</code></pre><h4>Classic Problem: Find K Largest Elements — O(n log k)</h4><pre><code>public int[] topK(int[] nums, int k) {
+    PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+    for (int num : nums) {
+        minHeap.offer(num);
+        if (minHeap.size() &gt; k) minHeap.poll();  // remove smallest
+    }
+    return minHeap.stream().mapToInt(Integer::intValue).toArray();
+}
+// topK([3,1,5,12,2,11], 3) → [5, 11, 12]</code></pre><h4>Classic Problem: Kth Smallest Element — O(n log k)</h4><pre><code>public int kthSmallest(int[] nums, int k) {
+    PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+    for (int num : nums) {
+        maxHeap.offer(num);
+        if (maxHeap.size() &gt; k) maxHeap.poll();
+    }
+    return maxHeap.peek();
+}</code></pre><table><tr><th>Operation</th><th>Time</th></tr><tr><td>offer (insert)</td><td>O(log n)</td></tr><tr><td>poll (remove top)</td><td>O(log n)</td></tr><tr><td>peek (view top)</td><td>O(1)</td></tr><tr><td>Build heap from array</td><td>O(n)</td></tr></table>`},
+{id:753,part:"T",level:"Senior",category:"Trie",q:"Trie (Prefix Tree) — Autocomplete, word search, and prefix matching",a:`<h4>Trie = Tree for Strings (each node = one character)</h4><pre><code>class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    boolean isEndOfWord = false;
+}
+
+public class Trie {
+    private final TrieNode root = new TrieNode();
+
+    // Insert word — O(m) where m = word length
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) node.children[idx] = new TrieNode();
+            node = node.children[idx];
+        }
+        node.isEndOfWord = true;
+    }
+
+    // Search exact word — O(m)
+    public boolean search(String word) {
+        TrieNode node = findNode(word);
+        return node != null &amp;&amp; node.isEndOfWord;
+    }
+
+    // Check prefix exists — O(m)
+    public boolean startsWith(String prefix) {
+        return findNode(prefix) != null;
+    }
+
+    private TrieNode findNode(String s) {
+        TrieNode node = root;
+        for (char c : s.toCharArray()) {
+            node = node.children[c - 'a'];
+            if (node == null) return null;
+        }
+        return node;
+    }
+
+    // Autocomplete — all words with given prefix
+    public List&lt;String&gt; autocomplete(String prefix) {
+        List&lt;String&gt; results = new ArrayList&lt;&gt;();
+        TrieNode node = findNode(prefix);
+        if (node != null) collectWords(node, new StringBuilder(prefix), results);
+        return results;
+    }
+    private void collectWords(TrieNode node, StringBuilder sb, List&lt;String&gt; results) {
+        if (node.isEndOfWord) results.add(sb.toString());
+        for (int i = 0; i &lt; 26; i++) {
+            if (node.children[i] != null) {
+                sb.append((char)('a' + i));
+                collectWords(node.children[i], sb, results);
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+    }
+}</code></pre><h4>SDET Use: Test Data Autocomplete / API Endpoint Matching</h4><p>Tries are used in search boxes, URL routers, and spell checkers. Understanding them helps when testing autocomplete features or building smart test data lookups.</p>`},
+{id:754,part:"T",level:"Senior",category:"Sorting",q:"Sorting Algorithms Comparison — Bubble, Selection, Insertion, Merge, Quick, and when to use each",a:`<h4>Sorting Comparison Table</h4><table><tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable?</th><th>When to Use</th></tr><tr><td>Bubble Sort</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>Yes</td><td>Never (educational only)</td></tr><tr><td>Selection Sort</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>No</td><td>Minimum swaps needed</td></tr><tr><td>Insertion Sort</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>Yes</td><td>Nearly sorted, small data</td></tr><tr><td>Merge Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes ✅</td><td>Guaranteed O(n log n), linked lists</td></tr><tr><td>Quick Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td><td>No</td><td>General purpose, in-place ✅</td></tr><tr><td>Tim Sort</td><td>O(n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes ✅</td><td>Java Arrays.sort(), real-world data</td></tr></table><h4>Java Built-in Sorting</h4><pre><code>// Arrays.sort() — uses Dual-Pivot Quicksort for primitives
+int[] arr = {5, 2, 8, 1, 9};
+Arrays.sort(arr);  // [1, 2, 5, 8, 9]
+
+// Collections.sort() — uses TimSort for objects (stable)
+List&lt;String&gt; names = Arrays.asList("Zebra", "Apple", "Mango");
+Collections.sort(names);  // [Apple, Mango, Zebra]
+
+// Custom comparator
+names.sort(Comparator.comparingInt(String::length));  // by length
+names.sort(Comparator.comparingInt(String::length).reversed());  // desc</code></pre><h4>Key Insight for Interviews</h4><p><strong>Java uses TimSort</strong> (hybrid of Merge Sort + Insertion Sort) for object arrays — stable, O(n log n), optimized for real-world partially sorted data. <strong>Always mention this</strong> when asked about sorting in Java.</p>`},
+{id:755,part:"T",level:"Senior",category:"Searching",q:"Binary Search — Iterative, recursive, and variations (lower/upper bound, rotated array)",a:`<h4>Standard Binary Search — O(log n)</h4><pre><code>// Iterative (preferred — no stack overflow risk)
+public int binarySearch(int[] arr, int target) {
+    int lo = 0, hi = arr.length - 1;
+    while (lo &lt;= hi) {
+        int mid = lo + (hi - lo) / 2;  // avoid overflow
+        if (arr[mid] == target) return mid;
+        else if (arr[mid] &lt; target) lo = mid + 1;
+        else hi = mid - 1;
+    }
+    return -1;  // not found
+}
+
+// Lower Bound: first index where arr[i] &gt;= target
+public int lowerBound(int[] arr, int target) {
+    int lo = 0, hi = arr.length;
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (arr[mid] &lt; target) lo = mid + 1;
+        else hi = mid;
+    }
+    return lo;
+}
+
+// Search in Rotated Sorted Array — O(log n)
+public int searchRotated(int[] nums, int target) {
+    int lo = 0, hi = nums.length - 1;
+    while (lo &lt;= hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (nums[mid] == target) return mid;
+        if (nums[lo] &lt;= nums[mid]) {  // left half sorted
+            if (target &gt;= nums[lo] &amp;&amp; target &lt; nums[mid]) hi = mid - 1;
+            else lo = mid + 1;
+        } else {  // right half sorted
+            if (target &gt; nums[mid] &amp;&amp; target &lt;= nums[hi]) lo = mid + 1;
+            else hi = mid - 1;
+        }
+    }
+    return -1;
+}</code></pre><table><tr><th>Variation</th><th>Time</th><th>Use Case</th></tr><tr><td>Standard binary search</td><td>O(log n)</td><td>Find exact value</td></tr><tr><td>Lower bound</td><td>O(log n)</td><td>First occurrence / insertion point</td></tr><tr><td>Upper bound</td><td>O(log n)</td><td>Last occurrence + 1</td></tr><tr><td>Rotated array search</td><td>O(log n)</td><td>Search in sorted-then-rotated array</td></tr></table>`},
+{id:756,part:"T",level:"Senior",category:"Recursion",q:"Recursion vs Iteration — When to use each, and how to convert recursive to iterative",a:`<h4>Recursion = Function calls itself | Iteration = Loops</h4><pre><code>// Recursive Factorial — O(n) time, O(n) space (call stack)
+public int factRecursive(int n) {
+    if (n &lt;= 1) return 1;         // base case
+    return n * factRecursive(n - 1);  // recursive case
+}
+
+// Iterative Factorial — O(n) time, O(1) space ✅
+public int factIterative(int n) {
+    int result = 1;
+    for (int i = 2; i &lt;= n; i++) result *= i;
+    return result;
+}</code></pre><h4>When to Use Each</h4><table><tr><th>Use Recursion When</th><th>Use Iteration When</th></tr><tr><td>Tree/Graph traversals</td><td>Simple loops (arrays, lists)</td></tr><tr><td>Divide and conquer (merge sort)</td><td>Performance-critical code</td></tr><tr><td>Problem naturally recursive (Tower of Hanoi)</td><td>Risk of StackOverflow (deep recursion)</td></tr><tr><td>Backtracking (N-Queens, permutations)</td><td>Tail recursion can be loop</td></tr></table><h4>Converting Recursion to Iteration (using Stack)</h4><pre><code>// Recursive DFS
+public void dfsRecursive(TreeNode node) {
+    if (node == null) return;
+    process(node);
+    dfsRecursive(node.left);
+    dfsRecursive(node.right);
+}
+
+// Same logic, iterative with explicit stack
+public void dfsIterative(TreeNode root) {
+    Deque&lt;TreeNode&gt; stack = new ArrayDeque&lt;&gt;();
+    if (root != null) stack.push(root);
+    while (!stack.isEmpty()) {
+        TreeNode node = stack.pop();
+        process(node);
+        if (node.right != null) stack.push(node.right);
+        if (node.left != null) stack.push(node.left);
+    }
+}</code></pre><h4>Key Interview Point</h4><p>Every recursive solution can be converted to iterative using an explicit stack. Iterative is preferred in production test frameworks because it avoids <code>StackOverflowError</code> on large inputs.</p>`},
+{id:757,part:"T",level:"Senior",category:"DP",q:"Dynamic Programming — Memoization vs Tabulation, with Fibonacci and Climbing Stairs examples",a:`<h4>DP = Break problem into overlapping subproblems + store results</h4><pre><code>// 1. Naive Recursive Fibonacci — O(2ⁿ) ❌ Exponential!
+public int fibNaive(int n) {
+    if (n &lt;= 1) return n;
+    return fibNaive(n-1) + fibNaive(n-2);  // recalculates same values
+}
+
+// 2. Top-Down DP (Memoization) — O(n) time, O(n) space
+public int fibMemo(int n, int[] memo) {
+    if (n &lt;= 1) return n;
+    if (memo[n] != 0) return memo[n];  // cached!
+    memo[n] = fibMemo(n-1, memo) + fibMemo(n-2, memo);
+    return memo[n];
+}
+
+// 3. Bottom-Up DP (Tabulation) — O(n) time, O(n) space
+public int fibTab(int n) {
+    if (n &lt;= 1) return n;
+    int[] dp = new int[n + 1];
+    dp[0] = 0; dp[1] = 1;
+    for (int i = 2; i &lt;= n; i++) dp[i] = dp[i-1] + dp[i-2];
+    return dp[n];
+}
+
+// 4. Space-Optimized — O(n) time, O(1) space ✅
+public int fibOptimal(int n) {
+    if (n &lt;= 1) return n;
+    int a = 0, b = 1;
+    for (int i = 2; i &lt;= n; i++) { int t = a + b; a = b; b = t; }
+    return b;
+}</code></pre><h4>Climbing Stairs (same pattern as Fibonacci)</h4><pre><code>// How many ways to climb n stairs (1 or 2 steps at a time)?
+// climbStairs(4) = 5: [1111, 112, 121, 211, 22]
+public int climbStairs(int n) {
+    if (n &lt;= 2) return n;
+    int a = 1, b = 2;
+    for (int i = 3; i &lt;= n; i++) { int t = a + b; a = b; b = t; }
+    return b;
+}</code></pre><table><tr><th>Approach</th><th>Time</th><th>Space</th><th>Direction</th></tr><tr><td>Naive recursion</td><td>O(2ⁿ)</td><td>O(n)</td><td>—</td></tr><tr><td>Memoization</td><td>O(n)</td><td>O(n)</td><td>Top-down</td></tr><tr><td>Tabulation</td><td>O(n)</td><td>O(n)</td><td>Bottom-up</td></tr><tr><td>Space-optimized</td><td>O(n)</td><td>O(1)</td><td>Bottom-up</td></tr></table>`},
+{id:758,part:"T",level:"Senior",category:"DP",q:"Coin Change Problem — Classic DP problem with tabulation approach",a:`<h4>Problem: Minimum coins to make amount</h4><pre><code>// Given coins [1, 5, 10, 25], make amount 30
+// Answer: 2 coins (5 + 25)
+
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1);  // fill with impossible value
+    dp[0] = 0;  // 0 coins to make 0
+
+    for (int i = 1; i &lt;= amount; i++) {
+        for (int coin : coins) {
+            if (coin &lt;= i) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+    return dp[amount] &gt; amount ? -1 : dp[amount];
+}
+
+// dp table for coins=[1,5,10], amount=12:
+// dp[0]=0, dp[1]=1, dp[2]=2, dp[3]=3, dp[4]=4,
+// dp[5]=1, dp[6]=2, dp[7]=3, dp[8]=4, dp[9]=5,
+// dp[10]=1, dp[11]=2, dp[12]=3  → answer: 3 (10+1+1)</code></pre><h4>Variation: Count number of ways to make change</h4><pre><code>public int coinChangeWays(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    dp[0] = 1;  // 1 way to make 0
+    for (int coin : coins) {
+        for (int i = coin; i &lt;= amount; i++) {
+            dp[i] += dp[i - coin];
+        }
+    }
+    return dp[amount];
+}</code></pre><table><tr><th>Variant</th><th>Time</th><th>Space</th></tr><tr><td>Min coins</td><td>O(amount × coins)</td><td>O(amount)</td></tr><tr><td>Count ways</td><td>O(amount × coins)</td><td>O(amount)</td></tr></table>`},
+{id:759,part:"T",level:"Senior",category:"Greedy",q:"Greedy Algorithms — Activity Selection, Interval Scheduling, and when Greedy works",a:`<h4>Greedy = Make locally optimal choice at each step</h4><pre><code>// Activity Selection: Max non-overlapping intervals
+// Sort by end time, greedily pick earliest-ending activities
+public int maxActivities(int[][] intervals) {
+    Arrays.sort(intervals, Comparator.comparingInt(a -&gt; a[1]));  // sort by end
+    int count = 1;
+    int lastEnd = intervals[0][1];
+    for (int i = 1; i &lt; intervals.length; i++) {
+        if (intervals[i][0] &gt;= lastEnd) {  // no overlap
+            count++;
+            lastEnd = intervals[i][1];
+        }
+    }
+    return count;
+}
+// [[1,3],[2,4],[3,5],[0,6],[5,7],[8,9],[5,9]]
+// Sorted by end: [1,3],[2,4],[3,5],[0,6],[5,7],[5,9],[8,9]
+// Pick: [1,3], [3,5], [5,7], [8,9] → 4 activities</code></pre><h4>Merge Intervals (Related Problem)</h4><pre><code>public int[][] mergeIntervals(int[][] intervals) {
+    Arrays.sort(intervals, Comparator.comparingInt(a -&gt; a[0]));
+    List&lt;int[]&gt; merged = new ArrayList&lt;&gt;();
+    for (int[] interval : intervals) {
+        if (merged.isEmpty() || merged.get(merged.size()-1)[1] &lt; interval[0]) {
+            merged.add(interval);
+        } else {
+            merged.get(merged.size()-1)[1] = Math.max(merged.get(merged.size()-1)[1], interval[1]);
+        }
+    }
+    return merged.toArray(new int[0][]);
+}</code></pre><h4>When Does Greedy Work?</h4><table><tr><th>Works ✅</th><th>Doesn't Work ❌ (Use DP)</th></tr><tr><td>Activity selection</td><td>0/1 Knapsack</td></tr><tr><td>Huffman coding</td><td>Coin change (general)</td></tr><tr><td>Fractional knapsack</td><td>Longest common subsequence</td></tr><tr><td>Minimum spanning tree (Kruskal/Prim)</td><td>Edit distance</td></tr></table>`},
+{id:760,part:"T",level:"Senior",category:"Patterns",q:"Two Pointer Technique — Solving array problems efficiently in O(n)",a:`<h4>Two Pointers = Two indices moving towards each other or in same direction</h4><pre><code>// Pattern 1: Opposite ends (sorted array)
+// Two Sum on sorted array — O(n)
+public int[] twoSumSorted(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left &lt; right) {
+        int sum = nums[left] + nums[right];
+        if (sum == target) return new int[]{left, right};
+        else if (sum &lt; target) left++;
+        else right--;
+    }
+    return new int[]{-1, -1};
+}
+
+// Pattern 2: Same direction (slow/fast pointer)
+// Remove duplicates in-place — O(n)
+public int removeDuplicates(int[] nums) {
+    if (nums.length == 0) return 0;
+    int slow = 0;
+    for (int fast = 1; fast &lt; nums.length; fast++) {
+        if (nums[fast] != nums[slow]) {
+            nums[++slow] = nums[fast];
+        }
+    }
+    return slow + 1;
+}
+
+// Pattern 3: Container With Most Water — O(n)
+public int maxArea(int[] height) {
+    int left = 0, right = height.length - 1;
+    int maxWater = 0;
+    while (left &lt; right) {
+        int area = Math.min(height[left], height[right]) * (right - left);
+        maxWater = Math.max(maxWater, area);
+        if (height[left] &lt; height[right]) left++;
+        else right--;
+    }
+    return maxWater;
+}</code></pre><table><tr><th>Problem</th><th>Brute Force</th><th>Two Pointer</th></tr><tr><td>Two Sum (sorted)</td><td>O(n²)</td><td>O(n)</td></tr><tr><td>Remove duplicates</td><td>O(n²)</td><td>O(n)</td></tr><tr><td>Container water</td><td>O(n²)</td><td>O(n)</td></tr><tr><td>Palindrome check</td><td>O(n)</td><td>O(n)</td></tr></table>`},
+{id:761,part:"T",level:"Senior",category:"Patterns",q:"Sliding Window Technique — Fixed and variable window problems",a:`<h4>Sliding Window = Maintain a window [left, right] and slide it across the array</h4><pre><code>// Fixed Window: Maximum sum subarray of size K — O(n)
+public int maxSumSubarray(int[] arr, int k) {
+    int windowSum = 0;
+    for (int i = 0; i &lt; k; i++) windowSum += arr[i];  // first window
+    int maxSum = windowSum;
+    for (int i = k; i &lt; arr.length; i++) {
+        windowSum += arr[i] - arr[i - k];  // slide: add right, remove left
+        maxSum = Math.max(maxSum, windowSum);
+    }
+    return maxSum;
+}
+
+// Variable Window: Smallest subarray with sum &gt;= target — O(n)
+public int minSubArrayLen(int target, int[] nums) {
+    int left = 0, sum = 0, minLen = Integer.MAX_VALUE;
+    for (int right = 0; right &lt; nums.length; right++) {
+        sum += nums[right];
+        while (sum &gt;= target) {
+            minLen = Math.min(minLen, right - left + 1);
+            sum -= nums[left++];  // shrink window
+        }
+    }
+    return minLen == Integer.MAX_VALUE ? 0 : minLen;
+}
+
+// Variable Window: Longest substring without repeating chars — O(n)
+public int lengthOfLongestSubstring(String s) {
+    Map&lt;Character, Integer&gt; lastSeen = new HashMap&lt;&gt;();
+    int maxLen = 0, left = 0;
+    for (int right = 0; right &lt; s.length(); right++) {
+        char c = s.charAt(right);
+        if (lastSeen.containsKey(c) &amp;&amp; lastSeen.get(c) &gt;= left)
+            left = lastSeen.get(c) + 1;
+        lastSeen.put(c, right);
+        maxLen = Math.max(maxLen, right - left + 1);
+    }
+    return maxLen;
+}</code></pre><table><tr><th>Window Type</th><th>When to Use</th><th>Example</th></tr><tr><td>Fixed</td><td>Exact window size given</td><td>Max sum of K elements</td></tr><tr><td>Variable (grow)</td><td>Find minimum/longest that satisfies condition</td><td>Min subarray &gt;= target</td></tr><tr><td>Variable (shrink)</td><td>Longest valid window</td><td>Longest unique substring</td></tr></table>`},
+{id:762,part:"T",level:"Mid",category:"Complexity",q:"What is the difference between O(n), O(n²), and O(log n)? Explain with simple examples",a:`<h4>Visual Comparison</h4><table><tr><th>n</th><th>O(log n)</th><th>O(n)</th><th>O(n log n)</th><th>O(n²)</th></tr><tr><td>10</td><td>3</td><td>10</td><td>33</td><td>100</td></tr><tr><td>100</td><td>7</td><td>100</td><td>664</td><td>10,000</td></tr><tr><td>1,000</td><td>10</td><td>1,000</td><td>9,966</td><td>1,000,000</td></tr><tr><td>1,000,000</td><td>20</td><td>1M</td><td>20M</td><td>1,000,000,000,000</td></tr></table><pre><code>// O(log n) — Binary search: halves the search space each step
+public int search(int[] sorted, int target) {
+    int lo = 0, hi = sorted.length - 1;
+    while (lo &lt;= hi) {
+        int mid = (lo + hi) / 2;
+        if (sorted[mid] == target) return mid;
+        if (sorted[mid] &lt; target) lo = mid + 1;
+        else hi = mid - 1;
+    }
+    return -1;
+}
+
+// O(n) — Single loop through array
+public int findMax(int[] arr) {
+    int max = arr[0];
+    for (int num : arr) if (num &gt; max) max = num;
+    return max;
+}
+
+// O(n²) — Nested loops (compare every pair)
+public boolean hasDuplicate(int[] arr) {
+    for (int i = 0; i &lt; arr.length; i++)
+        for (int j = i + 1; j &lt; arr.length; j++)
+            if (arr[i] == arr[j]) return true;
+    return false;
+}
+// Better: use HashSet → O(n)</code></pre><h4>Rule of Thumb for Interviews</h4><p>If n = 10⁶, your solution must be O(n) or O(n log n). O(n²) will time out. If n = 10⁴, O(n²) is OK but O(n³) is not.</p>`},
+{id:763,part:"T",level:"Mid",category:"Arrays",q:"Common Array Operations — Rotate, prefix sum, Kadane's algorithm",a:`<h4>Rotate Array by K positions — O(n) time, O(1) space</h4><pre><code>public void rotate(int[] nums, int k) {
+    k %= nums.length;
+    reverse(nums, 0, nums.length - 1);  // reverse all
+    reverse(nums, 0, k - 1);             // reverse first k
+    reverse(nums, k, nums.length - 1);   // reverse rest
+}
+private void reverse(int[] a, int l, int r) {
+    while (l &lt; r) { int t = a[l]; a[l++] = a[r]; a[r--] = t; }
+}
+// [1,2,3,4,5,6,7], k=3 → [5,6,7,1,2,3,4]</code></pre><h4>Prefix Sum — Range sum queries in O(1)</h4><pre><code>int[] nums = {2, 4, 6, 8, 10};
+int[] prefix = new int[nums.length + 1];
+for (int i = 0; i &lt; nums.length; i++) prefix[i+1] = prefix[i] + nums[i];
+// prefix = [0, 2, 6, 12, 20, 30]
+
+// Sum of range [1, 3] = prefix[4] - prefix[1] = 20 - 2 = 18
+int rangeSum = prefix[4] - prefix[1];  // O(1) per query!</code></pre><h4>Kadane's Algorithm — Maximum subarray sum O(n)</h4><pre><code>public int maxSubarraySum(int[] nums) {
+    int currentMax = nums[0], globalMax = nums[0];
+    for (int i = 1; i &lt; nums.length; i++) {
+        currentMax = Math.max(nums[i], currentMax + nums[i]);
+        globalMax = Math.max(globalMax, currentMax);
+    }
+    return globalMax;
+}
+// [-2,1,-3,4,-1,2,1,-5,4] → 6 (subarray [4,-1,2,1])</code></pre>`},
+{id:764,part:"T",level:"Mid",category:"Patterns",q:"How do you choose the right data structure? Decision flowchart for common problems",a:`<h4>Data Structure Decision Guide</h4><table><tr><th>Need</th><th>Use</th><th>Why</th></tr><tr><td>Fast lookup by key</td><td>HashMap</td><td>O(1) get/put</td></tr><tr><td>Unique elements</td><td>HashSet</td><td>O(1) add/contains, no dups</td></tr><tr><td>Sorted order + fast lookup</td><td>TreeMap / TreeSet</td><td>O(log n), sorted iteration</td></tr><tr><td>FIFO processing</td><td>Queue (LinkedList)</td><td>BFS, task queues</td></tr><tr><td>LIFO / undo</td><td>Stack (ArrayDeque)</td><td>DFS, bracket matching</td></tr><tr><td>Top K / min-max</td><td>PriorityQueue (Heap)</td><td>O(log n) insert, O(1) peek</td></tr><tr><td>Frequent insert/delete at ends</td><td>LinkedList / Deque</td><td>O(1) at head/tail</td></tr><tr><td>Random access by index</td><td>ArrayList / Array</td><td>O(1) get by index</td></tr><tr><td>Prefix matching / autocomplete</td><td>Trie</td><td>O(m) per word</td></tr><tr><td>Shortest path (unweighted)</td><td>BFS + Queue</td><td>Level-order guarantees shortest</td></tr></table><h4>Problem Pattern → Algorithm Map</h4><table><tr><th>Pattern</th><th>Technique</th><th>Example Problems</th></tr><tr><td>"Find pair that..."</td><td>Two Pointer / HashMap</td><td>Two Sum, 3Sum</td></tr><tr><td>"Subarray/substring of size K"</td><td>Sliding Window</td><td>Max sum, longest unique</td></tr><tr><td>"Sorted input, find target"</td><td>Binary Search</td><td>Search rotated, find peak</td></tr><tr><td>"All permutations/combinations"</td><td>Backtracking</td><td>N-Queens, subsets</td></tr><tr><td>"Optimal substructure"</td><td>Dynamic Programming</td><td>Coin change, knapsack</td></tr><tr><td>"Locally optimal → global"</td><td>Greedy</td><td>Activity selection, intervals</td></tr></table>`},
+{id:765,part:"T",level:"Mid",category:"Complexity",q:"Space Complexity — How to analyze memory usage of your algorithm",a:`<h4>Space Complexity = Extra memory used (excluding input)</h4><pre><code>// O(1) Space — in-place, no extra data structures
+public void reverseArray(int[] arr) {
+    int l = 0, r = arr.length - 1;
+    while (l &lt; r) { int t = arr[l]; arr[l++] = arr[r]; arr[r--] = t; }
+}
+
+// O(n) Space — new array/list of size n
+public int[] copyArray(int[] arr) {
+    int[] copy = new int[arr.length];  // O(n) extra
+    System.arraycopy(arr, 0, copy, 0, arr.length);
+    return copy;
+}
+
+// O(n) Space — HashMap
+public boolean hasDuplicate(int[] arr) {
+    Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();  // worst case n elements
+    for (int num : arr) {
+        if (!seen.add(num)) return true;
+    }
+    return false;
+}
+
+// O(log n) Space — recursive call stack (binary search)
+public int binarySearch(int[] arr, int lo, int hi, int target) {
+    if (lo &gt; hi) return -1;
+    int mid = (lo + hi) / 2;
+    if (arr[mid] == target) return mid;
+    if (arr[mid] &lt; target) return binarySearch(arr, mid+1, hi, target);
+    return binarySearch(arr, lo, mid-1, target);
+    // Each call adds a frame to call stack → O(log n) frames
+}
+
+// O(n) Space — recursive call stack (linear recursion)
+public int factorial(int n) {
+    if (n &lt;= 1) return 1;
+    return n * factorial(n - 1);  // n frames on call stack
+}</code></pre><table><tr><th>Space</th><th>Example</th></tr><tr><td>O(1)</td><td>In-place swap, two pointers, variables</td></tr><tr><td>O(log n)</td><td>Recursive binary search call stack</td></tr><tr><td>O(n)</td><td>HashMap, new array, linear recursion stack</td></tr><tr><td>O(n²)</td><td>2D matrix, adjacency matrix</td></tr></table><h4>Interview Tip</h4><p>Always mention <strong>both time AND space complexity</strong> when analyzing your solution. Interviewers specifically check if you consider the tradeoff — e.g., HashSet gives O(n) time but costs O(n) space vs. sorting gives O(n log n) time but O(1) space.</p>`}
+);
+
+// ============================================================
 // RENDER ENGINE
 // ============================================================
 function renderSidebar() {
     const sidebar = document.getElementById('sidebar');
     let html = '';
-    const sections = {A: {}, B: {}, C: {}, D: {}, E: {}, F: {}, G: {}, H: {}, I: {}, J: {}, K: {}, L: {}, M: {}, N: {}, O: {}, P: {}, Q: {}, R: {}, S: {}};
+    const sections = {A: {}, B: {}, C: {}, D: {}, E: {}, F: {}, G: {}, H: {}, I: {}, J: {}, K: {}, L: {}, M: {}, N: {}, O: {}, P: {}, Q: {}, R: {}, S: {}, T: {}};
 
     questions.forEach(q => {
         const part = q.part;
@@ -3180,6 +3956,11 @@ function renderSidebar() {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#f06595">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#e67700">DSA Concepts</div></div>';
+    questions.filter(q => q.part === 'T').forEach(q => {
+        html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#e67700">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
+    });
+
     sidebar.innerHTML = html;
 }
 
@@ -3200,7 +3981,7 @@ function renderMain() {
             <div class="hero-stat"><div class="hero-stat-value">${totalQ}</div><div class="hero-stat-label">Total</div></div>
             <div class="hero-stat"><div class="hero-stat-value">${seniorQ}</div><div class="hero-stat-label">🔥 Senior</div></div>
             <div class="hero-stat"><div class="hero-stat-value">${midQ}</div><div class="hero-stat-label">🌱 Mid</div></div>
-            <div class="hero-stat"><div class="hero-stat-value">19</div><div class="hero-stat-label">Parts</div></div>
+            <div class="hero-stat"><div class="hero-stat-value">20</div><div class="hero-stat-label">Parts</div></div>
         </div>
     </div>`;
 
@@ -3232,6 +4013,7 @@ function renderMain() {
                 <option value="Q">🛡️ Non-Functional Testing (${questions.filter(q=>q.part==='Q').length})</option>
                 <option value="R">🌐 Web Testing & BVA (${questions.filter(q=>q.part==='R').length})</option>
                 <option value="S">💻 FAQ Java Coding (${questions.filter(q=>q.part==='S').length})</option>
+                <option value="T">🧮 DSA Concepts (${questions.filter(q=>q.part==='T').length})</option>
             </select>
         </div>
         <div class="filter-group">
@@ -3354,6 +4136,10 @@ function renderMain() {
     // Part S Header
     html += `<div class="section-header part-s"><span class="section-icon">💻</span><div><div class="section-title">FAQ Java Coding Questions</div><div class="section-desc">Reverse String, Find Duplicates, Palindrome, Two Sum, Valid Parentheses, Merge Arrays, API Validation, Read JSON — all in Java for SDET interviews</div></div></div>`;
     questions.filter(q => q.part === 'S').forEach((q, i) => { html += renderCard(q, i); });
+
+    // Part T Header
+    html += `<div class="section-header part-t"><span class="section-icon">🧮</span><div><div class="section-title">Data Structures & Algorithms</div><div class="section-desc">Arrays, LinkedList, Stack, Queue, HashMap, Trees, Graphs, Sorting, Searching, Big-O — DSA concepts every SDET must know</div></div></div>`;
+    questions.filter(q => q.part === 'T').forEach((q, i) => { html += renderCard(q, i); });
 
     main.innerHTML = html;
 }
