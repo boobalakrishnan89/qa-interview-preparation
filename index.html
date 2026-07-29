@@ -1983,57 +1983,57 @@ function renderSidebar() {
         sections[part][q.category].push(q);
     });
 
-    html += '<div class="sidebar-section part-a"><div class="sidebar-section-title">Part A — Framework</div></div>';
+    html += '<div class="sidebar-section part-a"><div class="sidebar-section-title">Framework</div></div>';
     questions.filter(q => q.part === 'A').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section part-b" style="margin-top:16px"><div class="sidebar-section-title">Part B — Generic Senior QA</div></div>';
+    html += '<div class="sidebar-section part-b" style="margin-top:16px"><div class="sidebar-section-title">Generic Senior QA</div></div>';
     questions.filter(q => q.part === 'B').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:var(--orange)">Part C — Java Programming</div></div>';
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:var(--orange)">Java Programming</div></div>';
     questions.filter(q => q.part === 'C').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:var(--orange)">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:var(--green)">Part D — SQL</div></div>';
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:var(--green)">SQL</div></div>';
     questions.filter(q => q.part === 'D').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:var(--green)">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#58a6ff">Part E — CI/CD</div></div>';
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#58a6ff">CI/CD</div></div>';
     questions.filter(q => q.part === 'E').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#58a6ff">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#f97583">Part F — Playwright</div></div>';
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#f97583">Playwright</div></div>';
     questions.filter(q => q.part === 'F').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#f97583">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#d2a8ff">Part G — API Testing</div></div>';
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#d2a8ff">API Testing</div></div>';
     questions.filter(q => q.part === 'G').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#d2a8ff">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#f0883e">Part H — Selenium</div></div>';
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#f0883e">Selenium</div></div>';
     questions.filter(q => q.part === 'H').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#f0883e">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#3fb950">Part I — Manual Testing</div></div>';
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#3fb950">Manual Testing</div></div>';
     questions.filter(q => q.part === 'I').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#3fb950">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#bc8cff">Part J — AI in Testing</div></div>';
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#bc8cff">AI in Testing</div></div>';
     questions.filter(q => q.part === 'J').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#bc8cff">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
 
-    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#e3b341">Part K — QA Leadership</div></div>';
+    html += '<div class="sidebar-section" style="margin-top:16px"><div class="sidebar-section-title" style="color:#e3b341">QA Leadership</div></div>';
     questions.filter(q => q.part === 'K').forEach(q => {
         html += `<a href="#q${q.id}" class="nav-link" data-q="${q.id}"><span class="nav-q" style="color:#e3b341">Q${q.id}</span><span class="nav-text">${truncate(q.q, 48)}</span></a>`;
     });
@@ -2071,17 +2071,17 @@ function renderMain() {
             <span class="filter-label">Topic</span>
             <select class="filter-select" id="partFilter" onchange="filterPart(this.value)">
                 <option value="all">📚 All Topics (${totalQ})</option>
-                <option value="A">🔵 Part A — Framework (${questions.filter(q=>q.part==='A').length})</option>
-                <option value="B">🟣 Part B — Generic QA (${questions.filter(q=>q.part==='B').length})</option>
-                <option value="C">🟠 Part C — Java (${questions.filter(q=>q.part==='C').length})</option>
-                <option value="D">🟢 Part D — SQL (${questions.filter(q=>q.part==='D').length})</option>
-                <option value="E">🔷 Part E — CI/CD (${questions.filter(q=>q.part==='E').length})</option>
-                <option value="F">🎭 Part F — Playwright (${questions.filter(q=>q.part==='F').length})</option>
-                <option value="G">🔌 Part G — API Testing (${questions.filter(q=>q.part==='G').length})</option>
-                <option value="H">🌐 Part H — Selenium (${questions.filter(q=>q.part==='H').length})</option>
-                <option value="I">📝 Part I — Manual Testing (${questions.filter(q=>q.part==='I').length})</option>
-                <option value="J">🤖 Part J — AI in Testing (${questions.filter(q=>q.part==='J').length})</option>
-                <option value="K">👑 Part K — QA Leadership (${questions.filter(q=>q.part==='K').length})</option>
+                <option value="A">🔵 Framework (${questions.filter(q=>q.part==='A').length})</option>
+                <option value="B">🟣 Generic QA (${questions.filter(q=>q.part==='B').length})</option>
+                <option value="C">🟠 Java (${questions.filter(q=>q.part==='C').length})</option>
+                <option value="D">🟢 SQL (${questions.filter(q=>q.part==='D').length})</option>
+                <option value="E">🔷 CI/CD (${questions.filter(q=>q.part==='E').length})</option>
+                <option value="F">🎭 Playwright (${questions.filter(q=>q.part==='F').length})</option>
+                <option value="G">🔌 API Testing (${questions.filter(q=>q.part==='G').length})</option>
+                <option value="H">🌐 Selenium (${questions.filter(q=>q.part==='H').length})</option>
+                <option value="I">📝 Manual Testing (${questions.filter(q=>q.part==='I').length})</option>
+                <option value="J">🤖 AI in Testing (${questions.filter(q=>q.part==='J').length})</option>
+                <option value="K">👑 QA Leadership (${questions.filter(q=>q.part==='K').length})</option>
             </select>
         </div>
         <div class="filter-group">
@@ -2097,77 +2097,77 @@ function renderMain() {
     </div>`;
 
     // Part A Header
-    html += `<div class="section-header part-a"><span class="section-icon">🏗️</span><div><div class="section-title">Part A — Framework Architecture & Implementation</div><div class="section-desc">Real code from the Onsurity Java + Playwright framework (Q1–Q35)</div></div></div>`;
+    html += `<div class="section-header part-a"><span class="section-icon">🏗️</span><div><div class="section-title">Framework Architecture & Implementation</div><div class="section-desc">Real code from the Onsurity Java + Playwright framework (Q1–Q35)</div></div></div>`;
 
     questions.filter(q => q.part === 'A').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part B Header
-    html += `<div class="section-header part-b"><span class="section-icon">🎯</span><div><div class="section-title">Part B — Generic Senior QA / SDET</div><div class="section-desc">Most frequently asked at FAANG, FinTech & top-tier companies 2025/2026 (Q36–Q75)</div></div></div>`;
+    html += `<div class="section-header part-b"><span class="section-icon">🎯</span><div><div class="section-title">Generic Senior QA / SDET</div><div class="section-desc">Most frequently asked at FAANG, FinTech & top-tier companies 2025/2026 (Q36–Q75)</div></div></div>`;
 
     questions.filter(q => q.part === 'B').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part C Header
-    html += `<div class="section-header part-c"><span class="section-icon">☕</span><div><div class="section-title">Part C — Java Programming</div><div class="section-desc">Core Java, Collections, Multithreading, Streams, JVM, Design Patterns, Coding Problems (Q76–Q150)</div></div></div>`;
+    html += `<div class="section-header part-c"><span class="section-icon">☕</span><div><div class="section-title">Java Programming</div><div class="section-desc">Core Java, Collections, Multithreading, Streams, JVM, Design Patterns, Coding Problems (Q76–Q150)</div></div></div>`;
 
     questions.filter(q => q.part === 'C').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part D Header
-    html += `<div class="section-header part-d"><span class="section-icon">🗄️</span><div><div class="section-title">Part D — SQL for QA</div><div class="section-desc">Joins, Window Functions, Query Optimization, ACID, MongoDB, Database Testing (Q151–Q180)</div></div></div>`;
+    html += `<div class="section-header part-d"><span class="section-icon">🗄️</span><div><div class="section-title">SQL for QA</div><div class="section-desc">Joins, Window Functions, Query Optimization, ACID, MongoDB, Database Testing (Q151–Q180)</div></div></div>`;
 
     questions.filter(q => q.part === 'D').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part E Header
-    html += `<div class="section-header part-e"><span class="section-icon">🚀</span><div><div class="section-title">Part E — CI/CD & DevOps</div><div class="section-desc">GitHub Actions, Jenkins, Docker, Kubernetes, Deployment Strategies, GitOps (Q181–Q200)</div></div></div>`;
+    html += `<div class="section-header part-e"><span class="section-icon">🚀</span><div><div class="section-title">CI/CD & DevOps</div><div class="section-desc">GitHub Actions, Jenkins, Docker, Kubernetes, Deployment Strategies, GitOps (Q181–Q200)</div></div></div>`;
 
     questions.filter(q => q.part === 'E').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part F Header
-    html += `<div class="section-header part-f"><span class="section-icon">🎭</span><div><div class="section-title">Part F — Playwright (Java)</div><div class="section-desc">Locators, Auto-waiting, Network Interception, Tracing, POM, Parallel Execution, CDP, Visual Testing (Q201–Q225)</div></div></div>`;
+    html += `<div class="section-header part-f"><span class="section-icon">🎭</span><div><div class="section-title">Playwright (Java)</div><div class="section-desc">Locators, Auto-waiting, Network Interception, Tracing, POM, Parallel Execution, CDP, Visual Testing (Q201–Q225)</div></div></div>`;
 
     questions.filter(q => q.part === 'F').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part G Header
-    html += `<div class="section-header part-g"><span class="section-icon">🔌</span><div><div class="section-title">Part G — API Testing (REST Assured + Postman)</div><div class="section-desc">Framework Architecture, Serialization, OAuth2, Contract Testing, Security, Mocking, Newman (Q226–Q250)</div></div></div>`;
+    html += `<div class="section-header part-g"><span class="section-icon">🔌</span><div><div class="section-title">API Testing (REST Assured + Postman)</div><div class="section-desc">Framework Architecture, Serialization, OAuth2, Contract Testing, Security, Mocking, Newman (Q226–Q250)</div></div></div>`;
 
     questions.filter(q => q.part === 'G').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part H Header
-    html += `<div class="section-header part-h"><span class="section-icon">🌐</span><div><div class="section-title">Part H — Selenium WebDriver</div><div class="section-desc">WebDriver Architecture, Locators, Waits, Grid, Actions, Selenium 4, Cross-Browser Testing, Best Practices</div></div></div>`;
+    html += `<div class="section-header part-h"><span class="section-icon">🌐</span><div><div class="section-title">Selenium WebDriver</div><div class="section-desc">WebDriver Architecture, Locators, Waits, Grid, Actions, Selenium 4, Cross-Browser Testing, Best Practices</div></div></div>`;
 
     questions.filter(q => q.part === 'H').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part I Header
-    html += `<div class="section-header part-i"><span class="section-icon">📝</span><div><div class="section-title">Part I — Manual Testing</div><div class="section-desc">Scenario-Based Test Design, Bug Reporting, Test Estimation, Risk Analysis, Exploratory Testing, Real-World Edge Cases</div></div></div>`;
+    html += `<div class="section-header part-i"><span class="section-icon">📝</span><div><div class="section-title">Manual Testing</div><div class="section-desc">Scenario-Based Test Design, Bug Reporting, Test Estimation, Risk Analysis, Exploratory Testing, Real-World Edge Cases</div></div></div>`;
 
     questions.filter(q => q.part === 'I').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part J Header
-    html += `<div class="section-header part-j"><span class="section-icon">🤖</span><div><div class="section-title">Part J — AI in Testing</div><div class="section-desc">AI Testing Tools, LLM Agents, Agent-Based Testing, Prompt Engineering for QA, AI-Powered Test Generation, Copilot & Gemini for Testing</div></div></div>`;
+    html += `<div class="section-header part-j"><span class="section-icon">🤖</span><div><div class="section-title">AI in Testing</div><div class="section-desc">AI Testing Tools, LLM Agents, Agent-Based Testing, Prompt Engineering for QA, AI-Powered Test Generation, Copilot & Gemini for Testing</div></div></div>`;
 
     questions.filter(q => q.part === 'J').forEach((q, i) => {
         html += renderCard(q, i);
     });
 
     // Part K Header
-    html += `<div class="section-header part-k"><span class="section-icon">👑</span><div><div class="section-title">Part K — QA Leadership & Management</div><div class="section-desc">Team Leadership, Mentorship, Task Estimation, Velocity & Capacity, Bandwidth Allocation, Sprint Planning, Hiring, Stakeholder Management</div></div></div>`;
+    html += `<div class="section-header part-k"><span class="section-icon">👑</span><div><div class="section-title">QA Leadership & Management</div><div class="section-desc">Team Leadership, Mentorship, Task Estimation, Velocity & Capacity, Bandwidth Allocation, Sprint Planning, Hiring, Stakeholder Management</div></div></div>`;
 
     questions.filter(q => q.part === 'K').forEach((q, i) => {
         html += renderCard(q, i);
